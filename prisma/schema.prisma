@@ -28,6 +28,8 @@ model appointment {
   appointDatetime String?
   message         String?
   timestamp       String?
+  doctorId        String?
+  completedOn     String?
   user            user?   @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
 }
 
