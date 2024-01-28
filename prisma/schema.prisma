@@ -28,16 +28,22 @@ model appointment {
   appointDatetime String?
   message         String?
   timestamp       String?
+  doctorId        String?
+  completedOn     String?
   user            user?   @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
 }
 
 model healthData {
-  healthId  String  @id
-  userId    String?
-  dataType  String?
-  value     String?
-  timestamp String?
-  user      user?   @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_healthdata_user")
+  healthId           String   @id
+  userId             String?
+  updatedOn          String?
+  disabled           Boolean?
+  disabilityType     String?
+  chronicDiseases    String[]
+  allergies          String[]
+  dietType           String?
+  mentalHealthStatus String[]
+  user               user?    @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_healthdata_user")
 }
 
 model medicalInfo {

@@ -9,11 +9,7 @@
 //     const userList = useSelector((state) => state.userList)
 //     const  users  = userList
   
-  
-    
-  
-//     useEffect(() => {
-      
+
 //         dispatch(listUsers())
     
 //     }, [dispatch, history])
