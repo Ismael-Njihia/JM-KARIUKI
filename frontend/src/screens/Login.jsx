@@ -1,64 +1,57 @@
-import React, { useState } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { login } from '../Actions/UserAction';
-import { Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
+import {useState, useEffect} from 'react'
 
-const Login = () => {
- const dispatch = useDispatch();
- const navigate = useNavigate();
+import { Link } from 'react-router-dom'
+import {useLoginMutation} from '../slices/usersApiSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import { setCredentials } from '../slices/AuthSlice'
+import {toast} from 'react-toastify'
+import {useNavigate, useLocation} from 'react-router-dom'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { ToastContainer } from 'react-toastify'
 
- const [formData, setFormData] = useState({
-    email: '',
-    password: '',
- });
+const LoginPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
- const { email, password } = formData;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
- const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
- };
+    const [login, {isLoading}] = useLoginMutation();
+    const {userInfo } = useSelector(state => state.auth);
 
- const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await dispatch(login(email, password));
-      toast.success('Login successful!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      navigate('/dashboard'); // Redirect to Dashboard screen after successful login
-    } catch (error) {
-      toast.error(error.response?.data.message || 'Login failed. Please try again.', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    const location = useLocation();
+    const redirect = location.search ? location.search.split('=')[1] : '/';
+    useEffect(()=>{
+        if(userInfo){
+            navigate(redirect);
+        }
+    },[navigate, userInfo, redirect])
+    
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
     }
- };
-
- return (
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    }
+    const loginHandler = async (e) => {
+        e.preventDefault();
+       try {
+        const res = await login({email, password}).unwrap();
+        console.log(res);
+        dispatch(setCredentials(res));
+        toast.success('Login Successful');
+        navigate('/');
+        
+       } catch (error) {
+        toast.error(error?.data?.error || 'Something went wrong')
+        console.log(error);
+       }
+    }
+  return (
     <Container fluid style={{ backgroundColor: '#87CEEB', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Row>
         <Col >
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={loginHandler}>
             <Form.Group controlId="formEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -66,45 +59,46 @@ const Login = () => {
                 placeholder="Enter email"
                 name="email"
                 value={email}
-                onChange={handleChange}
+                onChange={handleEmailChange}
                 required
               />
             </Form.Group>
 
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={handleChange}
-                required
-              />
+            
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  required
+                />
             </Form.Group>
 
             <Button variant="primary" type="submit" style={{
 
-                backgroundColor: '#87CEEB',
-                color: 'black',
-                border: '2px solid black',
-                borderRadius: '10px',
-                padding: '10px 20px',
-                fontSize: '15px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                outline: 'none',
-                width: '100%',
-                marginTop: '30px',
-            }}>
+                  backgroundColor: '#87CEEB',
+                  color: 'black',
+                  border: '2px solid black',
+                  borderRadius: '10px',
+                  padding: '10px 20px',
+                  fontSize: '15px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  width: '100%',
+                  marginTop: '30px',
+                  }}disabled={isLoading}>
               Login
             </Button>
           </Form>
           <Row className='py-3'>
             <Col>
-              Don't have an Account?{' '}
-              <Link to='/register' style={{ color: '' }}>
-                Register
+             Don't have an Account?{' '}
+              <Link to='/register'>
+                Login
               </Link>
             </Col>
           </Row>
@@ -112,7 +106,7 @@ const Login = () => {
       </Row>
       <ToastContainer />
     </Container>
- );
-};
+  )
+}
 
-export default Login;
+export default LoginPage
