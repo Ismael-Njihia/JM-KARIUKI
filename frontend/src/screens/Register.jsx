@@ -1,92 +1,54 @@
-import React, { useState } from 'react';
-import { Form, Button, Container, InputGroup } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { register } from '../Actions/UserAction';
-import { Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import { Eye, EyeOff } from 'lucide-react';
+import { Link } from 'react-router-dom'
+import {useRegisterMutation} from '../slices/usersApiSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import { setCredentials } from '../slices/AuthSlice'
+import {toast, ToastContainer} from 'react-toastify'
+import {useNavigate, useLocation} from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+
 const Register = () => {
- const dispatch = useDispatch();
- const navigate = useNavigate();
-
- const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
- });
-
- const { email, password, firstname, lastname } = formData;
- const [confirmPassword, setConfirmPassword] = useState('');
- const [passwordShown, setPasswordShown] = useState(false);
- const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
-
- const togglePasswordVisibility = () => {
-   setPasswordShown(!passwordShown);
- };
-
- const toggleConfirmPasswordVisibility = () => {
-   setConfirmPasswordShown(!confirmPasswordShown);
- };
-
- const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-    if (e.target.name === 'confirmPassword') {
-      setConfirmPassword(e.target.value);
-    }
- };
-
- const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
-
-    try {
-      await dispatch(register(email, password, firstname, lastname));
-      toast.success('Registration successful!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      navigate('/login'); // Redirect to Login screen after successful registration
-    } catch (error) {
-      toast.error(error.response?.data.message || 'Registration failed. Please try again.', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
- };
+      const navigate = useNavigate();
+      const dispatch = useDispatch();
+      const [register, {isLoading}] = useRegisterMutation();
+  
+      const {userInfo } = useSelector(state => state.auth);
+      const location = useLocation();
+      const redirect = location.search ? location.search.split('=')[1] : '/';
+      useEffect(()=>{
+          if(userInfo){
+              navigate(redirect);
+          }
+      }, [navigate, userInfo, redirect])
+  
+      const [firstName, setFirstName] = useState('');
+      const [lastName, setLastName] = useState('');
+      const [email, setEmail] = useState('');
+       const [password, setPassword] = useState('');
+       const [confirmPassword, setConfirmPassword] = useState('');
+  
+  
+      
+       const handleRegister = async (e) => {
+          e.preventDefault();
+          try {
+              const res = await register({firstName,lastName, email, password}).unwrap();
+              console.log(res);
+              dispatch(setCredentials(res));
+              toast.success('Registration Successful');
+              navigate('/');
+          } catch (error) {
+              toast.error(error?.data?.message || 'Something went wrong')
+              console.log(error);
+              
+          }
+       };
+      
  return (
     <Container fluid style={{ backgroundColor: '#87CEEB', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Row>
         <Col >
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleRegister}>
             <Form.Group controlId="formEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -94,7 +56,7 @@ const Register = () => {
                 placeholder="Enter email"
                 name="email"
                 value={email}
-                onChange={handleChange}
+                onChange={e=>setEmail(e.target.value)}
                 required
               />
             </Form.Group>
@@ -107,8 +69,8 @@ const Register = () => {
                 type="text"
                 placeholder="Enter your first name"
                 name="firstname"
-                value={firstname}
-                onChange={handleChange}
+                value={firstName}
+                onChange={e=>setFirstName(e.target.value)}
                 required
               />
             </Form.Group>
@@ -119,8 +81,8 @@ const Register = () => {
                 type="text"
                 placeholder="Enter your last name"
                 name="lastname"
-                value={lastname}
-                onChange={handleChange}
+                value={lastName}
+                onChange={e=>setLastName(e.target.value)}
                 required
               />
             </Form.Group>
@@ -128,11 +90,11 @@ const Register = () => {
               <Form.Label>Password</Form.Label>
             
                 <Form.Control
-                  type={passwordShown ? "text" : "password"}
+                  type="password"
                   placeholder="Password"
                   name="password"
                   value={password}
-                  onChange={handleChange}
+                  onChange={e=>setPassword(e.target.value)}
                   required
                 />
                 
@@ -146,11 +108,11 @@ const Register = () => {
               <Form.Label>Confirm Password</Form.Label>
              
                 <Form.Control
-                  type={confirmPasswordShown ? "text" : "password"}
+                  type="password"
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   value={confirmPassword}
-                  onChange={handleChange}
+                  onChange={e=>setConfirmPassword(e.target.value)}
                   required
                 />
     
@@ -176,7 +138,7 @@ const Register = () => {
                   outline: 'none',
                   width: '100%',
                   marginTop: '30px',
-                  }}>
+                  }}disabled={isLoading}>
               Register
             </Button>
           </Form>
