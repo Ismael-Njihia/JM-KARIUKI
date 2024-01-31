@@ -1,21 +1,15 @@
-import Register from "./screens/Register";
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
-import Login from "./screens/Login";
-import Dashboard from "./screens/Dashboard";
-import Header from "./constants/Header";
-import HealthDataForm from "./components/HealthDataForm";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import  Header from "./components/Header";
 
 function App() {
  return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/health-data" element={<HealthDataForm />} />
-      </Routes>
-    </Router>
+  <>
+    <Header />
+  <Outlet />
+  <ToastContainer />
+  </>
  );
 }
 

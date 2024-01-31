@@ -15,11 +15,12 @@ const Register = () => {
       const {userInfo } = useSelector(state => state.auth);
       const location = useLocation();
       const redirect = location.search ? location.search.split('=')[1] : '/';
-      useEffect(()=>{
-          if(userInfo){
-              navigate(redirect);
-          }
-      }, [navigate, userInfo, redirect])
+      
+      //useEffect(()=>{
+      //    if(userInfo){
+     //         navigate(redirect);
+     //     }
+     // }, [navigate, userInfo, redirect])
   
       const [firstName, setFirstName] = useState('');
       const [lastName, setLastName] = useState('');
