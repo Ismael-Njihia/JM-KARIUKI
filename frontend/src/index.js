@@ -8,6 +8,7 @@ import store from './store'
 import 'react-toastify/dist/ReactToastify.css';
 import reportWebVitals from './reportWebVitals';
 
+
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom';
 
 import Homepage from './screens/Homepage';
@@ -22,6 +23,7 @@ import Appointments from './screens/Doctor/Appointments';
 import Patients from './screens/Doctor/Patients';
 import Prescriptions from './screens/Doctor/Prescriptions';
 import Doctors from './screens/Doctor/Doctors';
+
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
