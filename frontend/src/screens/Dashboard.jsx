@@ -1,58 +1,67 @@
-// import React, { useEffect } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { listUsers, deleteUser } from '../Actions/UserAction'; // Make sure to import your listUsers action
-// import { Row, Col, Table, Container } from 'react-bootstrap';
+import React from 'react';
+import { useGetUsersQuery } from '../slices/usersApiSlice';
+import { Table } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-// const Dashboard = ({history}) => {
-//     const dispatch = useDispatch()
+const Dashboard = () => {
+  const { data: users, isLoading } = useGetUsersQuery();
+  const { userInfo } = useSelector((state) => state.auth);
 
-//     const userList = useSelector((state) => state.userList)
-//     const  users  = userList
-  
+  // Check if the user is an admin
+  const isAdmin = userInfo?.userType === 'admin';
 
-//         dispatch(listUsers())
-    
-//     }, [dispatch, history])
-  
+  return (
+    <div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        isAdmin ? (
+          <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh'}}>
+            <h2 className='text-center'>All Users</h2>
+            {users ? (
+              <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width:'90%', marginLeft:'50px' }}>
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>User Type</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.email}>
+                      <td>{user.email}</td>
+                      <td>{user.firstName}</td>
+                      <td>{user.lastName}</td>
+                      <td>{user.userType}</td>
+                      <td>
+                        <FaEdit className='text-primary mr-5' />
+                        </td>
+                        <td>
+                        <FaTrashAlt className='text-danger' />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <p>No users available.</p>
+            )}
+            <h2>All Appointments</h2>
+            <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB' }}>
+              {/* Render appointments table */}
+            </Table>
+          </div>
+        ) : (
+          <p>You do not have permission to view this content.</p>
+        )
+      )}
+    </div>
+  );
+};
 
-//  return (
-//     <Container fluid style={{ backgroundColor: '#87CEEB', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-//       <Row>
-//         <Col>
-//           <h1>Users</h1>
-//           <Table striped bordered hover>
-//             <thead>
-//               <tr>
-//                 <th>First Name</th>
-//                 <th>Last Name</th>
-//                 <th>Email</th>
-//                 <th>User type</th>
-//                 <th>Actions</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {users?.map((user) => (
-//                 <tr key={user._id}>
-//                  <td>{user.firstName}</td>
-//                  <td>{user.lastName}</td>
-//                  <td>{user.email}</td>
-//                     <td>{user.userType}</td>
-//                     {/* <td>
-//                       <Button variant="primary" size="sm" onClick={() => handleEdit(user._id)}>
-//                         Edit
-//                       </Button>{' '}
-//                       <Button variant="danger" size="sm" onClick={() => handleDelete(user._id)}>
-//                         Delete
-//                       </Button>
-//                       </td> */}
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </Table>
-//         </Col>
-//       </Row>
-//     </Container>
-//  );
-// };
-
-// export default Dashboard;
+export default Dashboard;

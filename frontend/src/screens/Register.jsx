@@ -45,7 +45,7 @@ const Register = () => {
        };
       
  return (
-    <Container fluid style={{ backgroundColor: '#87CEEB', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Container fluid style={{ backgroundColor: '#87CEEB', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Row>
         <Col >
           <Form onSubmit={handleRegister}>

@@ -21,6 +21,8 @@ const LoginPage = () => {
 
     const location = useLocation();
     const redirect = location.search ? location.search.split('=')[1] : '/';
+    //check if user has flled HealthDataform or not
+
     useEffect(()=>{
         if(userInfo){
             navigate(redirect);
@@ -40,7 +42,7 @@ const LoginPage = () => {
         console.log(res);
         dispatch(setCredentials(res));
         toast.success('Login Successful');
-        navigate('/');
+        navigate('/health-data');
         
        } catch (error) {
         toast.error(error?.data?.error || 'Something went wrong')
@@ -48,7 +50,7 @@ const LoginPage = () => {
        }
     }
   return (
-    <Container fluid style={{ backgroundColor: '#87CEEB', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Container fluid style={{ backgroundColor: '#87CEEB', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Row>
         <Col >
           <Form onSubmit={loginHandler}>
