@@ -15,8 +15,8 @@ const Header = () => {
   const logoutHandler = async () => {
     try{
     await logoutBackendCall()
-    dispatch(logout())
     toast.success("Logged out successfully")
+    dispatch(logout())
     navigate("/login")
    
     } catch

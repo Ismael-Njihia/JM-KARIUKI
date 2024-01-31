@@ -16,7 +16,12 @@ import Dashboard from "./screens/Dashboard";
 import HealthDataForm from "./screens/HealthDataForm";
 import Register from "./screens/Register";
 import UserRoute from './components/UserRoute';
-
+import MyAppointments from './screens/MyAppointments';
+import Profile from './screens/Profile';
+import Appointments from './screens/Doctor/Appointments';
+import Patients from './screens/Doctor/Patients';
+import Prescriptions from './screens/Doctor/Prescriptions';
+import Doctors from './screens/Doctor/Doctors';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +33,12 @@ const routes = createBrowserRouter(
 
       <Route path='/' element={<UserRoute />}>
         <Route path='/health' element={<HealthDataForm />} />
+        <Route path='/myappointments' element={<MyAppointments />} />
+        <Route path='/profile' element={<Profile />} />
+         <Route path='/appointments' element={<Appointments />} />
+        <Route path='/patients' element={<Patients />} />
+        <Route path='/prescriptions' element={<Prescriptions />} />
+       <Route path='/doctor' element={<Doctors />} />
         </Route>
 
     </Route>
