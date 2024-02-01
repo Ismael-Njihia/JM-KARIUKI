@@ -42,8 +42,6 @@ const LoginPage = () => {
         console.log(res);
         dispatch(setCredentials(res));
         toast.success('Login Successful');
-        
-        
        } catch (error) {
         toast.error(error?.data?.error || 'Something went wrong')
         console.log(error);

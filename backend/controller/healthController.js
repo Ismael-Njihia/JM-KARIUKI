@@ -37,16 +37,14 @@ const createHealthRecord = asyncHandler(async(req, res)=>{
      //ensure the user has no other heath record
     const userHealth = await prisma.healthData.findFirst({where: {userId}});
     if(userHealth){
-        res.status(400);
-        throw new Error('User already has a health record, Modify the existing one');
+        res.status(400).json({errMessage: 'User already has a health record'})
     }
 
     //ensure there is no other health record with the id
     const uniqueHealthId = await prisma.healthData.findUnique({where: {healthId}});
 
     if(uniqueHealthId){
-        res.status(400);
-        throw new Error('Health record already exists');
+        res.status(400).json({error: 'Health record already exists'})
     }
     //create the health record
     const health = await prisma.healthData.create({

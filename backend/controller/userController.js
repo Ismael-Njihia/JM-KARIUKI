@@ -20,7 +20,7 @@ const register = asyncHandler(async(req, res)=>{
     const {email, password, firstName, lastName} = req.body;
     const timeStamp = new Date().toISOString();
 
-    const userType = 'doctor';
+    const userType = 'patient';
     const hashedPassword = await encryptPassword(password);
    
     if(!email || !password || !firstName || !lastName){
@@ -72,18 +72,17 @@ const login = asyncHandler(async(req, res)=>{
     const {email, password} = req.body;
 
     if(!email || !password){
-        res.status(400);
-        throw new Error('Please fill all fields');
+        res.status(400).json({ error: 'Please fill all fields' });
+        return;
     }
     const user = await prisma.user.findFirst({where: {email}});
     if(!user){
-        res.status(400);
-        throw new Error('User does not exist');
+        res.status(400).json({ error: 'Invalid email' });
     }
     const isMatch = await decryptPassword(password, user.password);
     if(!isMatch){
-        res.status(400);
-        throw new Error('Invalid password');
+        res.status(400).json({ error: 'Invalid password' });
+        return;
     }
     generateToken(res, user.userId);
     res.json({
@@ -105,8 +104,7 @@ const getUserById = asyncHandler(async(req, res)=>{
     if(user){
         res.json(user);
     }else{
-        res.status(404);
-        throw new Error('User not found');
+        res.status(404).json({message: 'User not found'});
     }
 })
 
@@ -118,8 +116,7 @@ const deleteUserById = asyncHandler(async(req, res)=>{
     const userId = req.params.id;
     const user = await prisma.user.findUnique({where: {userId}});
     if(!user){
-        res.status(404);
-        throw new Error('User not found');
+        res.status(404).json({message: 'User not found'});
     }
     const deletedUser = await prisma.user.delete({where: {userId}});
 

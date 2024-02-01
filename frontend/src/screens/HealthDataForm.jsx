@@ -80,16 +80,16 @@ const HealthDataForm = () => {
       // Call the Prisma mutation
     const res =  await addHealthData(healthData);
     console.log(res);
-    if(res.data.message ==='Health record created successfully'){
-      toast.success('Health data submitted successfully');
-      navigate('/dashboard');
+    //check the response
+    if(res.error){
+      toast.error(res.error?.data?.errMessage);
+    }else{
+    toast.success('Health Data Submitted Successfully');
     }
-    else{
-      toast.error('Failed to submit health data: ' + res?.Error || 'Something went wrong');
-    }
+    
    } catch (error) {
-      toast.error('Failed to submit health data: ' + error?.data?.error?.message || 'Something went wrong');
-   }
+      console.log(error);
+    }
   };
 
  
