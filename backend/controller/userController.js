@@ -9,7 +9,12 @@ import generateToken from "../util/generateToken.js";
 //GET /api/users
 //Private
 const getAllUsers = asyncHandler(async(req, res)=>{
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+        include:{
+            appointment: true,
+            healthData: true,
+        }
+    });
     res.json(users);
 })
 
@@ -100,7 +105,13 @@ const login = asyncHandler(async(req, res)=>{
 //Private
 const getUserById = asyncHandler(async(req, res)=>{
     const userId = req.params.id;
-    const user = await prisma.user.findUnique({where: {userId}});
+    const user = await prisma.user.findUnique({
+        where: {userId},
+        include:{
+            appointment: true,
+            healthData: true,
+        }
+    });
     if(user){
         res.json(user);
     }else{
