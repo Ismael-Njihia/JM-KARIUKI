@@ -25,6 +25,14 @@ export const AppointmentApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Appointments"],
         }),
+        addAppointment: builder.mutation({
+            query: (appointment) => ({
+                url: `/api/appointments/create`,
+                method: 'POST',
+                body: appointment,
+            }),
+            invalidatesTags: ["Appointments"],
+        }),
     }),
 });
 export const{
@@ -32,4 +40,5 @@ export const{
     useFetchAppointmentsByUserQuery,
     useDeleteAppointmentMutation,
     useEditAppointmentMutation,
+    useAddAppointmentMutation,
 } = AppointmentApiSlice;
