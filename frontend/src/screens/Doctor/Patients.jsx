@@ -31,9 +31,9 @@ const Doctors = () => {
                 <tbody>
                   {patients.map((patient) => (
                     <tr key={patient.email}>
-                      {/* <Link to = {`/doctor/patient/${patient.userId}`}> */}
+                      <Link to = {`/doctor/patient/${patient.userId}`}>
                       <td>{patient.userId}</td>
-                      {/* </Link> */}
+                      </Link>
                       <td>{patient.email}</td>
                       <td>{patient.firstName}</td>
                       <td>{patient.lastName}</td>

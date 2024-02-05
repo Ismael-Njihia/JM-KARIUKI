@@ -23,7 +23,7 @@ import Appointments from './screens/Doctor/Appointments';
 import Patients from './screens/Doctor/Patients';
 import Prescriptions from './screens/Doctor/Prescriptions';
 import Doctors from './screens/Doctor/Doctors';
-
+import ScheduleAppointment from './screens/Appointments/ScheduleAppointment';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -41,6 +41,7 @@ const routes = createBrowserRouter(
         <Route path='/patients' element={<Patients />} />
         <Route path='/prescriptions' element={<Prescriptions />} />
        <Route path='/doctor' element={<Doctors />} />
+       <Route path='/schedule_appointment' element={<ScheduleAppointment />} />
         </Route>
 
     </Route>
