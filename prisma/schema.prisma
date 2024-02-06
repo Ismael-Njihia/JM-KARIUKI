@@ -18,19 +18,19 @@ model user {
   userType    String?
   appointment appointment[]
   healthData  healthData[]
-  medicalInfo medicalInfo[]
 }
 
 model appointment {
   userId          String?
-  appointId       String  @id
+  appointId       String        @id
   appointStatus   String?
   appointDatetime String?
   message         String?
   timestamp       String?
   doctorId        String?
   completedOn     String?
-  user            user?   @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
+  user            user?         @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
+  medicalInfo     medicalInfo[]
 }
 
 model healthData {
@@ -47,10 +47,10 @@ model healthData {
 }
 
 model medicalInfo {
-  medicalId     String   @id
-  userId        String?
+  medicalId     String       @id
+  appointId     String?
   test_results  String?
   prescriptions String[]
   timestamp     String?
-  user          user?    @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_medicalinfo_user")
+  appointment   appointment? @relation(fields: [appointId], references: [appointId], onDelete: NoAction, onUpdate: NoAction, map: "fk_medicalinfo_user")
 }
