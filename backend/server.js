@@ -15,7 +15,7 @@ app.use(express.json());
 app.use('/api/users', userRoute);
 app.use('/api/appointments', appointRoute);
 app.use('/api/health', healthRoute);
-app.use('./api/medical', medicalRoute);
+app.use('/api/medical', medicalRoute);
 
 
 app.listen(PORT, () => {
