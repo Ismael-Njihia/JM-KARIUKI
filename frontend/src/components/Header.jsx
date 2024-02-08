@@ -36,7 +36,7 @@ const Header = () => {
 
           {
             userInfo?(
-              <NavDropdown title={userInfo.firstName} id="username">
+              <NavDropdown title={userInfo?.firstName} id="username">
                <LinkContainer to="/myappointments">
                   <NavDropdown.Item>My Appointments</NavDropdown.Item>
                 </LinkContainer>
@@ -57,7 +57,7 @@ const Header = () => {
           }
 
           {
-            userInfo && userInfo.userType === "doctor" &&(
+            userInfo?.userType === "doctor" &&(
               <NavDropdown title="Doctor" id="doctor">
                 <LinkContainer to='/appointments'>
                   <NavDropdown.Item>Appointments</NavDropdown.Item> 
@@ -79,7 +79,7 @@ const Header = () => {
           }
 
 {
-            userInfo && userInfo.userType === "admin" &&(
+            userInfo?.userType === "admin" &&(
               <NavDropdown title="Doctor" id="doctor">
                 <LinkContainer to='/appointments'>
                   <NavDropdown.Item>Appointments</NavDropdown.Item> 
