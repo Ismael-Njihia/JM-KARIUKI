@@ -14,7 +14,7 @@ const scheduleAppointment = () => {
   navigate('/schedule_appointment');
 }
 const viewAppointments = () => {
-  navigate('/appointments');
+  navigate('/myappointments');
 }
 const viewMedicalInfo = () => {
   navigate('/medical-info');
