@@ -27,6 +27,8 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
             message,
 
         }
+
+        console.log(appointmentData);
         const res = await addAppointment(appointmentData);
         console.log(res);
         if(res.error){
@@ -48,6 +50,8 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
     value: user.userId,
     label: `${user.firstName} ${user.lastName}`,
  }));
+
+ console.log("doctorOptions", doctorOptions);
 
  return (
     <Container fluid style={{ backgroundColor: '#87CEEB', paddingBottom: '50px', paddingTop: '40px', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

@@ -9,8 +9,11 @@ const Appointments = () => {
     const userId = userInfo.userId;
     const firstName = userInfo.firstName;
     const { data: appointments, isLoading } = useFetchAppointmentsQuery();
+
+    console.log(appointments);
     const { data: users, loading } = useGetUsersQuery();
     const doctorAppointments = appointments?.filter(appointment => appointment.doctorId === userId);
+
 
     return (
         <>

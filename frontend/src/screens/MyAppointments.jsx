@@ -9,6 +9,7 @@ const MyAppointments = () => {
     const userId = userInfo.userId;
     const firstName = userInfo.firstName;
     const { data: appointments, isLoading } = useFetchAppointmentsQuery();
+    console.log(appointments);
     const { data: users, loading } = useGetUsersQuery();
     const patientAppointments = appointments?.filter(appointment => appointment.userId === userId);
 
@@ -21,8 +22,8 @@ const MyAppointments = () => {
                     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
                         <h2 className='text-center'>Patient {firstName} Appointments</h2>
                         {patientAppointments && patientAppointments.length >  0 ? (
-                            <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width: '90%', marginLeft: '50px' }}>
-                                <thead>
+                            <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width: '90%', marginLeft: '50px', fontSize:"12px" }}>
+                                <thead style={{fontSize: "12px"}}>
                                     <tr>
                                         <th>Appointment Id</th>
                                         <th>Doctor Email</th>
@@ -31,11 +32,15 @@ const MyAppointments = () => {
                                         <th>Appointment Date</th>
                                         <th>Appointment Time</th>
                                         <th>Message</th>
+                                        <th>Appointment Status</th>
+                                        <th>chat</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {patientAppointments.map((appointment) => {
-                                        const doctorDetails = users?.find(user => user.userId === appointment.doctotId);
+                                        const doctorDetails = users?.find(user => user.userId === appointment.doctorId);
+                                        console.log(doctorDetails);
                                         return (
                                             <tr key={appointment.appointId}>
 
@@ -58,6 +63,17 @@ const MyAppointments = () => {
                                             {appointment.timestamp.split('T')[1].split('.')[0]}
                                             </td>
                                                 <td>{appointment.message}</td>
+                                                <td>{appointment.appointStatus}</td>
+                                                <td>
+                                                    <button>
+                                                    <Link to={`/chat/${appointment.doctorId}`}>Chat</Link>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button>
+                                                        cancel
+                                                    </button>
+                                                </td>
                                             </tr>
                                         );
                                     })}
