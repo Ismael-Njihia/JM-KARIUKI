@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { Card, Button, Table, Row, Col } from 'react-bootstrap';
 import { FaCalendarAlt } from 'react-icons/fa'; // Import the calendar icon from react-icons
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +9,20 @@ import { FaUserDoctor } from "react-icons/fa6";
 import '../Assets/Homepage.css';
 
 const Homepage = () => {
+  const navigate = useNavigate();
  const { userInfo } = useSelector(state => state.auth);
+
+ useEffect(() => {
+  if (!userInfo) {
+    navigate('/login');
+  }
+}, [userInfo, navigate]);
+
+
+if (!userInfo) {
+  return null;
+}
  const userType = userInfo.userType;
-const navigate = useNavigate();
 const scheduleAppointment = () => {
   navigate('/schedule_appointment');
 }
