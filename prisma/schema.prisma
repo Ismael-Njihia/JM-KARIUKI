@@ -7,30 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  email       String?
-  password    String?
-  firstName   String?
-  lastName    String?
-  timeStamp   String?
-  userId      String        @id
-  description String?
-  userType    String?
-  appointment appointment[]
-  healthData  healthData[]
-}
-
 model appointment {
   userId          String?
-  appointId       String        @id
+  appointId       String         @id
   appointStatus   String?
   appointDatetime String?
   message         String?
   timestamp       String?
   doctorId        String?
   completedOn     String?
-  user            user?         @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
+  user            user?          @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
   medicalInfo     medicalInfo[]
+  messageTable    messageTable[]
 }
 
 model healthData {
@@ -53,4 +41,31 @@ model medicalInfo {
   prescriptions String[]
   timestamp     String?
   appointment   appointment? @relation(fields: [appointId], references: [appointId], onDelete: NoAction, onUpdate: NoAction, map: "fk_medicalinfo_user")
+}
+
+model messageTable {
+  messageId                          String      @id(map: "message_pkey")
+  senderId                           String
+  receiverId                         String
+  appointId                          String
+  messageText                        String
+  timestamp                          String?
+  appointment                        appointment @relation(fields: [appointId], references: [appointId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_appointment")
+  user_messageTable_receiverIdTouser user        @relation("messageTable_receiverIdTouser", fields: [receiverId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_receiver")
+  user_messageTable_senderIdTouser   user        @relation("messageTable_senderIdTouser", fields: [senderId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_sender")
+}
+
+model user {
+  email                                      String?
+  password                                   String?
+  firstName                                  String?
+  lastName                                   String?
+  timeStamp                                  String?
+  userId                                     String         @id
+  description                                String?
+  userType                                   String?
+  appointment                                appointment[]
+  healthData                                 healthData[]
+  messageTable_messageTable_receiverIdTouser messageTable[] @relation("messageTable_receiverIdTouser")
+  messageTable_messageTable_senderIdTouser   messageTable[] @relation("messageTable_senderIdTouser")
 }
