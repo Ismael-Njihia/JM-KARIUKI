@@ -18,12 +18,9 @@ const Appointments = () => {
     return (
         <>
             <div>
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : (
                     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
                         <h2 className='text-center'>Doctor {firstName} Appointments</h2>
-                        {doctorAppointments && doctorAppointments.length >  0 ? (
+                        {doctorAppointments ? (
                             <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width: '90%', marginLeft: '50px' }}>
                                 <thead>
                                     <tr>
@@ -70,7 +67,6 @@ const Appointments = () => {
                             <p>No appointments available.</p>
                         )}
                     </div>
-                )}
             </div>
         </>
     );

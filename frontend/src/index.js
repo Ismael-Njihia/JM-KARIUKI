@@ -43,7 +43,7 @@ const routes = createBrowserRouter(
         <Route path='/prescriptions' element={<Prescriptions />} />
        <Route path='/doctor' element={<Doctors />} />
        <Route path='/schedule_appointment' element={<ScheduleAppointment />} />
-        <Route path='/chat/:id' element={<Chat />} />
+        <Route path='/chat/:appointId/:id' element={<Chat />} />
         </Route>
 
     </Route>

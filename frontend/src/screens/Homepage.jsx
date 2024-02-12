@@ -35,6 +35,9 @@ const viewMedicalInfo = () => {
 const viewHealthData = () => {
   navigate('/health-data');
 }
+const viewDoctorAppointments = () =>{
+  navigate('/appointments')
+}
 
  return (
     <div style={{ backgroundColor: '#87CEEB', minHeight:'100vh' }}>
@@ -187,7 +190,7 @@ const viewHealthData = () => {
             outline: 'none',
             width: '100%',
             marginTop: '30px',
-            }} onClick={viewAppointments} >View Appointments</Button>
+            }} onClick={viewDoctorAppointments} >View Appointments</Button>
             </Card.Body>
           </Card>
           </Col>
