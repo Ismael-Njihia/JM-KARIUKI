@@ -35,6 +35,10 @@ export const messageApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Messages"],
         }),
+        getMessagesByAppointId: builder.query({
+            query: (appointId) => `/api/messages/${appointId}`,
+            providesTags: ["Messages"],
+        }),
     }),
 
 });
@@ -43,6 +47,7 @@ export const{
     useEditMessageMutation,
     useDeleteMessageMutation,
     useFetchMessagesByUserMutation,
-    useFetchMessagesQuery
+    useFetchMessagesQuery,
+    useGetMessagesByAppointIdQuery
 
 } = messageApiSlice;

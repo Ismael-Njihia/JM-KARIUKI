@@ -55,7 +55,27 @@ const createMessage = asyncHandler(async(req, res)=>{
     res.json(message);
 })
 
+//GET MESSAGE BY APPOINT ID
+//GET /api/messages/:appointId
+//Private
+const getMessagesByAppointId = asyncHandler(async(req, res)=>{
+    const appointId = req.params.appointId;
+    //make sure appointId exists
+    const appoint = await prisma.appointment.findUnique({where: {appointId}});
+    if(!appoint){
+        res.status(400).json({message: 'Appointment does not exist'});
+    
+    }
+    const messages = await prisma.messageTable.findMany({where: {appointId}});
+    //order the messages by timestamp
+   let sortedMessages =messages.sort((a, b) => a.timestamp - b.timestamp);
+
+    res.json(sortedMessages);
+})
+
 
 export {
     createMessage,
-    getAllMessages}
+    getAllMessages,
+    getMessagesByAppointId
+}

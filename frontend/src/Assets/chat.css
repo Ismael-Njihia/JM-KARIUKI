@@ -1,0 +1,44 @@
+.MessageConvo {
+    max-height: 350px; 
+    overflow-y: auto;
+  }
+
+
+.MessageConvo::-webkit-scrollbar {
+    width: 8px; 
+  }
+  
+
+  .MessageConvo::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 4px; 
+  }
+  
+
+  .MessageConvo::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  .Message{
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .Message p{
+    margin: 0;
+  }
+
+  .Message.left {
+    text-align: left;
+  }
+
+  .Message.right {
+    text-align: right;
+    margin-right: 7px;
+    background-color: #400101;
+  }
+  .Message.timestamp{
+    font-size: 7px;
+    color: red;
+  }
