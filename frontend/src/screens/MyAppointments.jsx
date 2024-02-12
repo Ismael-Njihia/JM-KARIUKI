@@ -3,7 +3,8 @@ import { useFetchAppointmentsQuery } from '../slices/ApppointmentApiSlice';
 import { useGetUsersQuery } from '../slices/usersApiSlice';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import { LuMessagesSquare } from "react-icons/lu";
+import { TbCalendarCancel } from "react-icons/tb";
 const MyAppointments = () => {
     const { userInfo } = useSelector(state => state.auth);
     const userId = userInfo.userId;
@@ -65,14 +66,17 @@ const MyAppointments = () => {
                                                 <td>{appointment.message}</td>
                                                 <td>{appointment.appointStatus}</td>
                                                 <td>
-                                                    <button>
-                                                    <Link to={`/chat/${appointment.doctorId}`}>Chat</Link>
-                                                    </button>
+                                                <button class="btn btn-transparent">
+                                                <Link to={`/chat/${appointment.appointId}/${appointment.doctorId}`}>
+                                                    <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
+                                                    </LuMessagesSquare>
+                                                    </Link>
+                                                </button>
                                                 </td>
                                                 <td>
-                                                    <button>
-                                                        cancel
-                                                    </button>
+                                                <button class="btn btn-transparent">
+                                                    <TbCalendarCancel  style={{color: '#dc3545'}}/>
+                                                </button>
                                                 </td>
                                             </tr>
                                         );
