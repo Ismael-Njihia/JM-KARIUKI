@@ -1,12 +1,12 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useGetUsersQuery } from '../slices/usersApiSlice';
-import { useSendMessageMutation, useFetchMessagesByUserMutation, useGetMessagesByAppointIdQuery } from '../slices/messagesApiSlice';
+import { useSendMessageMutation, useGetMessagesByAppointIdQuery } from '../slices/messagesApiSlice';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import '../Assets/chat.css'
-
+import { IoIosSend } from "react-icons/io";
 
 const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -80,16 +80,17 @@ const Chat = () => {
   const userPatient = patientDetails?.userType || '';
   const isDoctor = userType === 'doctor';
   const isPatient = userPatient === 'patient';
-  const userDetails = isDoctor ? doctorDetails : isPatient ? patientDetails : userInfo;
+  const userDetails = isDoctor ? doctorDetails: isPatient ? patientDetails : userInfo;
+
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
       <Row style={{ marginLeft: '20px', marginRight: '20px' }}>
-        <Col md={6} style={{ border: '2px solid blue' }}>
-          <h2>{isDoctor ? 'Doctor Details' : 'Patient Details'}</h2>
-          <p>Name: {userDetails?.firstName}</p>
+        <Col md={6} style={{ border: '2px solid black' }}>
+          <h2>{isPatient ? 'Patient Details' : 'Doctor Details'  }</h2>
+          <p>First Name: {userDetails?.firstName}</p>
+          <p>Last Name: {userDetails?.lastName}</p>
           <p>Email: {userDetails?.email}</p>
-          {/* More details can be displayed here */}
         </Col>
         <Col md={6}>
           <h2>Conversation</h2>
@@ -104,16 +105,26 @@ const Chat = () => {
               ))
             )}
            </div>
-          <Form>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Type your message here..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <Button variant="primary" onClick={handleSendMessage} disabled={isLoading}>Send</Button>
-          </Form>
+           <Form style={{ display: 'flex', flexDirection: 'column' }}>
+              <Form.Control
+                as="textarea"
+                rows={1}
+                placeholder="Type your message here..."
+                style={{ marginBottom: '10px', resize: 'none', overflow: 'hidden', transition: 'height 0.5s' }}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onFocus={(e) => { e.target.rows = 3; }}
+                onBlur={(e) => { e.target.rows = 1; }}
+              />
+              <Button
+                variant="primary"
+                onClick={handleSendMessage}
+                disabled={isLoading}
+                style={{ alignSelf: 'flex-end',position:'absolute',  width: 'fit-content', alignItems: 'center', justifyContent: 'center'}}
+              >
+                <IoIosSend /> 
+              </Button>
+            </Form>
         </Col>
       </Row>
       <ToastContainer />
