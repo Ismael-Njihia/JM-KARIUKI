@@ -31,12 +31,19 @@
 
   .Message.left {
     text-align: left;
+    background-color: #000;
+    width: 50%;
+    right: 50%;
+
   }
 
   .Message.right {
     text-align: right;
     margin-right: 7px;
-    background-color: #400101;
+    background-color: #0d6efd;
+    width: 50%;
+    position: relative;
+    left: 50%;
   }
   .Message.timestamp{
     font-size: 7px;

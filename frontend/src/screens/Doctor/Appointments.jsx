@@ -3,6 +3,8 @@ import { useFetchAppointmentsQuery } from '../../slices/ApppointmentApiSlice';
 import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { LuMessagesSquare } from "react-icons/lu";
+import { TbCalendarCancel } from "react-icons/tb";
 
 const Appointments = () => {
     const { userInfo } = useSelector(state => state.auth);
@@ -31,6 +33,8 @@ const Appointments = () => {
                                         <th>Appointment Date</th>
                                         <th>Appointment Time</th>
                                         <th>Message</th>
+                                        <th>chat</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,6 +62,19 @@ const Appointments = () => {
                                             {appointment.timestamp.split('T')[1].split('.')[0]}
                                             </td>
                                                 <td>{appointment.message}</td>
+                                                <td>
+                                                <button class="btn btn-transparent">
+                                                <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
+                                                    <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
+                                                    </LuMessagesSquare>
+                                                    </Link>
+                                                </button>
+                                                </td>
+                                                <td>
+                                                <button class="btn btn-transparent">
+                                                    <TbCalendarCancel  style={{color: '#dc3545'}}/>
+                                                </button>
+                                                </td>
                                             </tr>
                                         );
                                     })}
