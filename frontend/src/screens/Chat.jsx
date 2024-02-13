@@ -1,7 +1,8 @@
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import { Row, Col, Form, Button, ListGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useGetUsersQuery } from '../slices/usersApiSlice';
 import { useSendMessageMutation, useGetMessagesByAppointIdQuery } from '../slices/messagesApiSlice';
+import { useGetAppointmentBYIDQuery } from '../slices/ApppointmentApiSlice'
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -43,7 +44,9 @@ const Chat = () => {
   //get previous messages
   const {data: messages, loading: messagesLoading} = useGetMessagesByAppointIdQuery(appointId);
   
-  console.log(messages)
+  const { data: appointment, loading: appointmentLoading } = useGetAppointmentBYIDQuery(appointId);
+
+  console.log(appointment);
 
   const { data: users, loading } = useGetUsersQuery();
   const doctorDetails = users?.find(user => user.userId === id);
@@ -86,14 +89,51 @@ const Chat = () => {
   return (
     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
       <Row style={{ marginLeft: '20px', marginRight: '20px' }}>
-        <Col md={6} style={{ border: '2px solid black' }}>
-          <h2>{isPatient ? 'Patient Details' : 'Doctor Details'  }</h2>
+        <Col md={6} style={{}}>
+          <h6 style={{textAlign: "center"}}>{isPatient ? 'Patient Details' : 'Doctor Details'  }</h6>
+          <hr style={{ borderTop: '2px solid #000' }} />
           <p>First Name: {userDetails?.firstName}</p>
           <p>Last Name: {userDetails?.lastName}</p>
           <p>Email: {userDetails?.email}</p>
+
+          <hr style={{ borderTop: '2px solid #000' }} />
+
+          <Row>
+            <Col md={8}>
+              <ListGroup variant='flush'>
+                <ListGroup.Item>
+                  <strong>Appointment</strong>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Appointment ID:</strong> {appointId}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Appointment Date:</strong> {appointment?.appointDatetime}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Appointment Status:</strong> {appointment?.appointStatus}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Message:</strong> {appointment?.message}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Created On:</strong> {formatTimestamp(appointment?.timestamp)}
+                </ListGroup.Item>
+                {appointment?.completedOn && (
+                  <ListGroup.Item>
+                    <strong>Completed On:</strong> {formatTimestamp(appointment?.completedOn)}
+                  </ListGroup.Item>
+                
+                )}
+                </ListGroup>
+            </Col>
+          </Row>
+
+
         </Col>
         <Col md={6}>
-          <h2>Conversation</h2>
+          <h6 style={{textAlign: "center"}}>Messages</h6>
+          <hr style={{ borderTop: '2px solid #000' }} />
            <div className='MessageConvo'>
             {messagesLoading ? (
               <p>Loading messages...</p>
