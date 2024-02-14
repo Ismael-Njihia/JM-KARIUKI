@@ -79,18 +79,20 @@ const createAppointment = asyncHandler(async(req, res)=>{
 //Private
 
 const cancelAppointment = asyncHandler(async(req, res)=>{
-    const {id} = req.params;
+    const { id } = req.params;
     const userId = req.user.userId;
+    console.log(id + "ID")
     const appointStatus = "cancelled";
 
     const appointment = await prisma.appointment.findUnique({where: {appointId: id}});
     if(!appointment){
-        res.status(404);
-        throw new Error('Appointment does not exist');
+       res.status(404).json({message: "Appointment not found"});
     }
-    if(appointment.userId !== userId){
-        res.status(401);
-        throw new Error('Not authorized to cancel this appointment');
+    //get the doctorId associated with the appointment
+    const doctorId = appointment.doctorId;
+    console.log(doctorId + "DoctorId");
+    if(appointment.userId !== userId || appointment.doctorId !== userId){
+        res.status(401).json({message: "Not authorized to cancel this appointment"});
     }
     const updatedAppointment = await prisma.appointment.update({
         where: {appointId: id},

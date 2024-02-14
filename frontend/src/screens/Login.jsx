@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 
 import { Link } from 'react-router-dom'
-import {useLoginMutation} from '../slices/usersApiSlice'
+import { useLoginMutation } from '../slices/usersApiSlice'
 import {useDispatch, useSelector} from 'react-redux'
 import { setCredentials } from '../slices/AuthSlice'
 import {toast} from 'react-toastify'

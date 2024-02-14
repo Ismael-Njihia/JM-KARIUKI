@@ -16,11 +16,13 @@ const Appointments = () => {
     const { data: appointments, isLoading } = useFetchAppointmentsQuery();
     const [show, setShow] = useState(false);
     const [selectedAppointId, setSelectedAppointId] = useState(null);
+    
 
     //cancel appointment
     const [cancelAppointment, { isLoading: cancelLoading }] = useCancelAppointmentMutation();
 
     const handleShow = (appointId) => {
+        console.log(appointId)
         setSelectedAppointId(appointId); // Set the selected appointment ID in the state
         setShow(true); // Show the modal
       };
@@ -28,7 +30,7 @@ const Appointments = () => {
   
     const handleCancel = async () => {
       try {
-        const response = await cancelAppointment({ appointId: selectedAppointId }).unwrap();
+        const response = await cancelAppointment(selectedAppointId);
         console.log(response);
         if(response.error) {
             toast.error(response.error.data.message || 'An error occured');
