@@ -39,9 +39,11 @@ const Appointments = () => {
         }
         else{
         toast.success('Appointment canceled successfully');
+        console.log(response);
         }
       } catch (error) {
-        toast.error('Error canceling appointment: ' + error.message);
+        toast.error(error?.data?.message);
+        console.log(error);
       } finally {
         handleClose();
       }
