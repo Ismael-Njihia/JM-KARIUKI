@@ -88,20 +88,7 @@ const cancelAppointment = asyncHandler(async(req, res)=>{
     if(!appointment){
        res.status(404).json({message: "Appointment not found"});
     }
-    //get the doctorId associated with the appointment
-    const doctorId = appointment.doctorId;
-    console.log(doctorId + "DoctorId");
-    console.log(userId + "userId");
 
-    //match the doctorId and userId with the appointment
-    const doctor = await prisma.user.findUnique({where: {userId: doctorId}});
-    const user = await prisma.user.findUnique({where: {userId}});
-    const doctorEmail = doctor.email;
-    const userEmail = user.email;
-
-    if(appointment.userId !== userId || appointment.doctorId !== userId){
-        res.status(401).json({message: `This appointment can be cancelled by patient with email: ${userEmail} or doc with email: ${doctorEmail}`});
-    }
     const updatedAppointment = await prisma.appointment.update({
         where: {appointId: id},
         data: {
