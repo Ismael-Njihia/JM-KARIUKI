@@ -5,6 +5,7 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LuMessagesSquare } from "react-icons/lu";
 import { TbCalendarCancel } from "react-icons/tb";
+import { FaHandHoldingMedical } from "react-icons/fa";
 
 const Appointments = () => {
     const { userInfo } = useSelector(state => state.auth);
@@ -15,7 +16,7 @@ const Appointments = () => {
     console.log(appointments);
     const { data: users, loading } = useGetUsersQuery();
     const doctorAppointments = appointments?.filter(appointment => appointment.doctorId === userId);
-
+    
 
     return (
         <>
@@ -35,6 +36,7 @@ const Appointments = () => {
                                         <th>Message</th>
                                         <th>chat</th>
                                         <th>Actions</th>
+                                        <th>Prescribe</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,6 +77,13 @@ const Appointments = () => {
                                                     <TbCalendarCancel  style={{color: '#dc3545'}}/>
                                                 </button>
                                                 </td>
+                                                <td>
+                                                    <button class="btn btn-transparent" >
+                                                    <Link to={`/doctor/prescribe/${appointment.appointId}`}>
+                                                        <FaHandHoldingMedical style={{color:'#0d6efd'}} />
+                                                   </Link>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         );
                                     })}
@@ -85,6 +94,7 @@ const Appointments = () => {
                         )}
                     </div>
             </div>
+            
         </>
     );
 };

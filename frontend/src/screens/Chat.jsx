@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import '../Assets/chat.css'
 import { IoIosSend } from "react-icons/io";
 
+
 const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     const formattedDate = date.toLocaleString('en-US', {
@@ -54,8 +55,12 @@ const Chat = () => {
   const { userInfo } = useSelector(state => state.auth);
   const userId = userInfo.userId;
   const [sendMessage, { isLoading }] = useSendMessageMutation();
+ 
+
   
   const [message, setMessage] = useState('');
+
+
   
   const handleSendMessage = async () => {
     // Construct the message object
@@ -78,13 +83,15 @@ const Chat = () => {
     }
   };
 
+  
+  
   // Determine whether to show doctor or patient details
   const userType = doctorDetails?.userType || '';
   const userPatient = patientDetails?.userType || '';
   const isDoctor = userType === 'doctor';
   const isPatient = userPatient === 'patient';
   const userDetails = isDoctor ? doctorDetails: isPatient ? patientDetails : userInfo;
-
+ 
 
   return (
     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
@@ -125,7 +132,10 @@ const Chat = () => {
                   </ListGroup.Item>
                 
                 )}
+
                 </ListGroup>
+
+              
             </Col>
           </Row>
 

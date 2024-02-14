@@ -33,28 +33,26 @@ const Header = () => {
           <LinkContainer to="/">
             <Navbar.Brand >JM KARIUKI</Navbar.Brand>
           </LinkContainer>
-
           {
-            userInfo?(
-              <NavDropdown title={userInfo?.firstName} id="username">
-               <LinkContainer to="/myappointments">
-                  <NavDropdown.Item>My Appointments</NavDropdown.Item>
-                </LinkContainer>
-               
-                <LinkContainer to="/profile">
-                  <NavDropdown.Item>My Profile</NavDropdown.Item>
-                </LinkContainer>
-                <NavDropdown.Item onClick={logoutHandler}>
-                  logout
-                </NavDropdown.Item>
+        userInfo ? (
+          <NavDropdown title={userInfo?.firstName} id="username">
+            <LinkContainer to={userInfo.userType === 'patient' ? "/myappointments" : "/appointments"}>
+              <NavDropdown.Item>{userInfo.userType === 'patient' ? "My Appointments" : "Appointments"}</NavDropdown.Item>
+            </LinkContainer>
+            <LinkContainer to="/profile">
+              <NavDropdown.Item>My Profile</NavDropdown.Item>
+            </LinkContainer>
+            <NavDropdown.Item onClick={logoutHandler}>
+              logout
+            </NavDropdown.Item>
+          </NavDropdown>
+        ) : (
+          <LinkContainer to="/login">
+            <Nav.Link><i className="fas fa-user"></i>Sign In</Nav.Link>
+          </LinkContainer>
+        )
+}
 
-                </NavDropdown>
-            ):(
-              <LinkContainer to="/login">
-                <Nav.Link><i className="fas fa-user"></i>Sign In</Nav.Link>
-              </LinkContainer>
-            )
-          }
 
           {
             userInfo?.userType === "doctor" &&(
