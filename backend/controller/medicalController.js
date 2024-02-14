@@ -17,6 +17,7 @@ const getAllmedical = asyncHandler(async(req, res)=>{
 const createMedical = asyncHandler(async(req, res)=>{
     const userId = req.user.userId;
     const {appointId, test_results, prescriptions} = req.body;
+    const completedOn = new Date().toISOString();
 
     //verufy if appointment exists
     const appointment = await prisma.appointment.findUnique({
@@ -30,11 +31,11 @@ const createMedical = asyncHandler(async(req, res)=>{
         return
     }
     //get the doctorId from the appointment
-   // const doctorId = appointment.doctorId;
-   // if(doctorId !== userId){
-   //     res.status(401).json({message: 'You had not been Booked for this appointment'})
-  //      return
-  //  }
+   const doctorId = appointment.doctorId;
+    if(doctorId !== userId){
+       res.status(401).json({message: 'You had not been Booked for this appointment'})
+      return
+   }
     //create medical record
     const medicalId = randomGenerator().toString();
     const timestamp = new Date().toISOString();
@@ -45,6 +46,11 @@ const createMedical = asyncHandler(async(req, res)=>{
             medicalId
         }
     })
+    //check if appointment is completed
+    if(appointment.appointStatus === 'completed'){
+        res.status(400).json({message: 'Appointment already completed'})
+        return
+    }
 
     if(medicalExists){
         res.status(400).json({message: 'Medical record already exists'})
@@ -68,7 +74,8 @@ const createMedical = asyncHandler(async(req, res)=>{
                 appointId: appointId
             },
             data: {
-                appointStatus: 'completed'
+                appointStatus: 'completed',
+                completedOn
             }
         })
 

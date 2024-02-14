@@ -126,7 +126,7 @@ const Chat = () => {
                 <ListGroup.Item>
                   <strong>Created On:</strong> {formatTimestamp(appointment?.timestamp)}
                 </ListGroup.Item>
-                {appointment?.completedOn && (
+                {appointment?.appointStatus === 'completed' && (
                   <ListGroup.Item>
                     <strong>Completed On:</strong> {formatTimestamp(appointment?.completedOn)}
                   </ListGroup.Item>

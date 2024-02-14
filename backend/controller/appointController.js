@@ -117,16 +117,16 @@ const updateAppointment = asyncHandler(async(req, res)=>{
    //check the current status of the appointment
 
    const isCompleted = appointment.appointStatus === "completed";
+   console.log(isCompleted + "TRue here");
     if(isCompleted){
-         res.status(400);
-         throw new Error('Appointment already completed');
+        res.status(400).json({message: "Appointment already completed"});
     }
     const isCancelled = appointment.appointStatus === "cancelled";
     if(isCancelled){
         res.status(400);
         throw new Error('Appointment already cancelled');
     }
-
+   
     if(!appointment){
         res.status(404);
         throw new Error('Appointment does not exist');

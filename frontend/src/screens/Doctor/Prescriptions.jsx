@@ -1,14 +1,16 @@
 import { useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useCreatreMedicalMutation } from '../../slices/medicalApiSlice'; 
 import { toast , ToastContainer} from 'react-toastify';
 
+
 const Prescriptions = () => {
   const { userInfo } = useSelector(state => state.auth);
   const userId = userInfo.userId;
   const firstName = userInfo.firstName;
+  const navigate = useNavigate();
   const { appointId } = useParams();
   console.log(appointId);
 
@@ -36,18 +38,23 @@ const Prescriptions = () => {
     };
 
     try {
-      const response = await createMedical(prescriptionData).unwrap();
-      if (response.error) {
-        toast.error(`Error: ${response.error?.data?.errMessage}`);
-      } else {
+      const response = await createMedical(prescriptionData);
+      console.log(response);
+
+      if(response.error) {
+        toast.error(response.error.data.message || 'An error occured');
+        return;
+      }else{
         toast.success('Medication prescribed successfully');
         //clear the form 
         setPrescription('');
         setTestResult('');
-
+        //redirect to the appointments page
+        navigate('/doctor/appointments');
+        
       }
     } catch (error) {
-      toast.error(`Network error: ${error.message}`);
+      toast.error(error?.data?.message|| 'An error occurred');
     }
   };
 
