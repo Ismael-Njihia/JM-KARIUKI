@@ -1,19 +1,48 @@
 import { useSelector } from "react-redux";
 import { useFetchAppointmentsQuery } from '../../slices/ApppointmentApiSlice';
 import { useGetUsersQuery } from '../../slices/usersApiSlice';
-import { Table } from 'react-bootstrap';
+import { Table, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LuMessagesSquare } from "react-icons/lu";
 import { TbCalendarCancel } from "react-icons/tb";
 import { FaHandHoldingMedical } from "react-icons/fa";
-
+import {useCancelAppointmentMutation} from '../../slices/ApppointmentApiSlice';
+import { useState } from 'react';
+import {toast, ToastContainer} from 'react-toastify';
 const Appointments = () => {
     const { userInfo } = useSelector(state => state.auth);
     const userId = userInfo.userId;
     const firstName = userInfo.firstName;
     const { data: appointments, isLoading } = useFetchAppointmentsQuery();
+    const [show, setShow] = useState(false);
+    const [selectedAppointId, setSelectedAppointId] = useState(null);
 
-    console.log(appointments);
+    //cancel appointment
+    const [cancelAppointment, { isLoading: cancelLoading }] = useCancelAppointmentMutation();
+
+    const handleShow = (appointId) => {
+        setSelectedAppointId(appointId); // Set the selected appointment ID in the state
+        setShow(true); // Show the modal
+      };
+    const handleClose = () => setShow(false);
+  
+    const handleCancel = async () => {
+      try {
+        const response = await cancelAppointment({ appointId: selectedAppointId }).unwrap();
+        console.log(response);
+        if(response.error) {
+            toast.error(response.error.data.message || 'An error occured');
+            return;
+        }
+        else{
+        toast.success('Appointment canceled successfully');
+        }
+      } catch (error) {
+        toast.error('Error canceling appointment: ' + error.message);
+      } finally {
+        handleClose();
+      }
+    }
     const { data: users, loading } = useGetUsersQuery();
     const doctorAppointments = appointments?.filter(appointment => appointment.doctorId === userId);
     
@@ -35,8 +64,9 @@ const Appointments = () => {
                                         <th>Appointment Time</th>
                                         <th>Message</th>
                                         <th>chat</th>
-                                        <th>Actions</th>
+                                        <th>Cancel</th>
                                         <th>Prescribe</th>
+                                        <th>Appointment Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,8 +103,8 @@ const Appointments = () => {
                                                 </button>
                                                 </td>
                                                 <td>
-                                                <button class="btn btn-transparent">
-                                                    <TbCalendarCancel  style={{color: '#dc3545'}}/>
+                                                <button class="btn btn-transparent" onClick={() => handleShow(appointment.appointId)}>
+                                                    <TbCalendarCancel style={{color: '#dc3545'}}/>
                                                 </button>
                                                 </td>
                                                 <td>
@@ -83,6 +113,9 @@ const Appointments = () => {
                                                         <FaHandHoldingMedical style={{color:'#0d6efd'}} />
                                                    </Link>
                                                     </button>
+                                                </td>
+                                                <td className={appointment.appointStatus === 'completed' ? 'text-danger' : 'text-success'}>
+                                                {appointment.appointStatus}
                                                 </td>
                                             </tr>
                                         );
@@ -94,6 +127,21 @@ const Appointments = () => {
                         )}
                     </div>
             </div>
+            <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Cancel Appointment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to cancel this appointment?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            No
+          </Button>
+          <Button variant="primary" onClick={handleCancel} disabled={cancelLoading}>
+            Yes, Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <ToastContainer />
             
         </>
     );

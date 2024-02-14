@@ -4,7 +4,8 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useCreatreMedicalMutation } from '../../slices/medicalApiSlice'; 
 import { toast , ToastContainer} from 'react-toastify';
-
+import { useFetchAppointmentsQuery } from '../../slices/ApppointmentApiSlice';
+import { useGetUsersQuery } from '../../slices/usersApiSlice';
 
 const Prescriptions = () => {
   const { userInfo } = useSelector(state => state.auth);
@@ -25,6 +26,15 @@ const Prescriptions = () => {
   };
 
   const [createMedical, { isLoading }] = useCreatreMedicalMutation();
+  const { data: appointments, isLoading: appointLoading } = useFetchAppointmentsQuery();
+  const { data: users, loading } = useGetUsersQuery();
+
+  const patientId = appointments?.find(appointment => appointment.appointId === appointId).userId;
+
+  //fetch the patient details according to the patientId
+  const patientDetails = users?.find(user => user.userId === patientId);
+
+  console.log(patientDetails);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +60,7 @@ const Prescriptions = () => {
         setPrescription('');
         setTestResult('');
         //redirect to the appointments page
-        navigate('/doctor/appointments');
+        navigate('/appointments');
         
       }
     } catch (error) {
@@ -63,7 +73,14 @@ const Prescriptions = () => {
     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
       <Row style={{ marginLeft: '20px', marginRight: '20px' }}>
         <Col md={6}>
-          <p>Doctor {firstName}, Prescriptions</p>
+          <h2 className="text-center"> Patient {patientDetails?.firstName}, Details</h2>
+          {patientDetails ? (
+            <div>
+              <p>First Name: {patientDetails.firstName}</p>
+              <p>Last Name: {patientDetails.lastName}</p>
+              <p>Email: {patientDetails.email}</p>
+              </div>
+          ):(<p>Loading..</p>)}
         </Col>
         <Col md={6}>
           <h1 className="text-center">Prescribe medication</h1>
