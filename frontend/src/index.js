@@ -40,7 +40,7 @@ const routes = createBrowserRouter(
         <Route path='/profile' element={<Profile />} />
          <Route path='/appointments' element={<Appointments />} />
         <Route path='/patients' element={<Patients />} />
-        <Route path='/prescriptions' element={<Prescriptions />} />
+        <Route path='/doctor/prescribe/:appointId' element={<Prescriptions />} />
        <Route path='/doctor' element={<Doctors />} />
        <Route path='/schedule_appointment' element={<ScheduleAppointment />} />
         <Route path='/chat/:appointId/:id' element={<Chat />} />
