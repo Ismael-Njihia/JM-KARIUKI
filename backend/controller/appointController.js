@@ -91,6 +91,8 @@ const cancelAppointment = asyncHandler(async(req, res)=>{
     //get the doctorId associated with the appointment
     const doctorId = appointment.doctorId;
     console.log(doctorId + "DoctorId");
+    console.log(userId + "userId");
+    
     if(appointment.userId !== userId || appointment.doctorId !== userId){
         res.status(401).json({message: "Not authorized to cancel this appointment"});
     }

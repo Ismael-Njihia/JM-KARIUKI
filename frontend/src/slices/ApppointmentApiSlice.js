@@ -39,7 +39,7 @@ export const AppointmentApiSlice = apiSlice.injectEndpoints({
         
         }),
         cancelAppointment: builder.mutation({
-            query: ({selectedAppointId: id}) => ({
+            query: (id) => ({
                 url: `/api/appointments/cancel/${id}`,
                 method: 'PUT',
             }),

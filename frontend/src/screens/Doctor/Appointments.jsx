@@ -30,7 +30,8 @@ const Appointments = () => {
   
     const handleCancel = async () => {
       try {
-        const response = await cancelAppointment(selectedAppointId);
+        console.log(selectedAppointId, 'selectedAppointId');
+        const response = await cancelAppointment(selectedAppointId).unwrap();
         console.log(response);
         if(response.error) {
             toast.error(response.error.data.message || 'An error occured');
