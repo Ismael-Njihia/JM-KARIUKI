@@ -37,6 +37,8 @@ const Profile = () => {
   const handleLogout = async () => {
     await logoutBackendCall()
     toast.success("Logged out successfully")
+    //set the user to null
+    
     dispatch(logout());
     navigate('/login');
     };

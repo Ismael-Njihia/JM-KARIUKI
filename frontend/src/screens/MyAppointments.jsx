@@ -5,6 +5,14 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LuMessagesSquare } from "react-icons/lu";
 import { TbCalendarCancel } from "react-icons/tb";
+import { FaPencilAlt } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import { useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import { useCancelAppointmentMutation } from '../slices/ApppointmentApiSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import {useDeleteAppointmentMutation} from '../slices/ApppointmentApiSlice';
+import {useEditAppointmentMutation} from '../slices/ApppointmentApiSlice';
 const MyAppointments = () => {
     const { userInfo } = useSelector(state => state.auth);
     const userId = userInfo.userId;
@@ -13,7 +21,95 @@ const MyAppointments = () => {
     console.log(appointments);
     const { data: users, loading } = useGetUsersQuery();
     const patientAppointments = appointments?.filter(appointment => appointment.userId === userId);
+    const [show, setShow] = useState(false);
+    const [selectedAppointId, setSelectedAppointId] = useState(null);
+    const [cancelAppointment, { isLoading: cancelLoading }] = useCancelAppointmentMutation();
+    const [deleteAppointment, { isLoading: deleteLoading }] = useDeleteAppointmentMutation();
+    const [editAppointment, { isLoading: editLoading }] = useEditAppointmentMutation();
+    const [showDelete, setShowDelete] = useState(false);
+    const [selectedAppointIdDelete, setSelectedAppointIdDelete] = useState(null);
+    const [selectedAppointIdEdit, setSelectedAppointIdEdit] = useState(null);
+    const [showEdit, setShowEdit] = useState(false);
+    const handleShow = (appointId) => {
+        console.log(appointId)
+        setSelectedAppointId(appointId); // Set the selected appointment ID in the state
+        setShow(true); // Show the modal
+      };
 
+    const handleShowDelete = (appointId) => {
+        console.log(appointId)
+        setSelectedAppointIdDelete(appointId); 
+        setShowDelete(true);    
+        };
+    const handleShowEdit = (appointId) => {
+        console.log(appointId)
+        setSelectedAppointIdEdit(appointId);
+        setShowEdit(true);
+    };
+    const handleClose = () => setShow(false);
+    const handleCloseDelete = () => setShowDelete(false);
+    const handleCloseEdit = () => setShowEdit(false);
+  
+    const handleCancel = async () => {
+      try {
+        console.log(selectedAppointId, 'selectedAppointId');
+        const response = await cancelAppointment(selectedAppointId).unwrap();
+        console.log(response);
+        if(response.error) {
+            toast.error(response.error.data.message || 'An error occured');
+            return;
+        }
+        else{
+        toast.success('Appointment canceled successfully');
+        console.log(response);
+        }
+      } catch (error) {
+        toast.error(error?.data?.message);
+        console.log(error);
+      } finally {
+        handleClose();
+      }
+    }
+    const handleDelete = async () => {
+        try {
+          console.log(selectedAppointId, 'selectedAppointId');
+          const response = await deleteAppointment(selectedAppointIdDelete).unwrap();
+          console.log(response);
+          if(response.error) {
+              toast.error(response.error.data.message || 'An error occured');
+              return;
+          }
+          else{
+          toast.success('Appointment deleted successfully');
+          console.log(response);
+          }
+        } catch (error) {
+          toast.error(error?.data?.message);
+          console.log(error);
+        } finally {
+            handleCloseDelete();
+        }
+    }
+    const handleEdit = async () => {
+        try {
+          console.log(selectedAppointId, 'selectedAppointId');
+          const response = await editAppointment(selectedAppointIdEdit).unwrap();
+          console.log(response);
+          if(response.error) {
+              toast.error(response.error.data.message || 'An error occured');
+              return;
+          }
+          else{
+          toast.success('Appointment edited successfully');
+          console.log(response);
+          }
+        } catch (error) {
+          toast.error(error?.data?.message);
+          console.log(error);
+        } finally {
+            handleCloseEdit();
+        }
+    }
     return (
         <>
             <div>
@@ -35,7 +131,9 @@ const MyAppointments = () => {
                                         <th>Message</th>
                                         <th>Appointment Status</th>
                                         <th>chat</th>
-                                        <th>Actions</th>
+                                        <th>Cancel</th>
+                                        <th>Eddit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,7 +162,9 @@ const MyAppointments = () => {
                                             {appointment.timestamp.split('T')[1].split('.')[0]}
                                             </td>
                                                 <td>{appointment.message}</td>
-                                                <td>{appointment.appointStatus}</td>
+                                                <td className={appointment.appointStatus === 'scheduled' ? 'text-success' : 'text-danger'}>
+                                                {appointment.appointStatus}
+                                                </td>
                                                 <td>
                                                 <button class="btn btn-transparent">
                                                 <Link to={`/chat/${appointment.appointId}/${appointment.doctorId}`}>
@@ -74,8 +174,18 @@ const MyAppointments = () => {
                                                 </button>
                                                 </td>
                                                 <td>
-                                                <button class="btn btn-transparent">
+                                                <button class="btn btn-transparent" onClick={() => handleShow(appointment.appointId)}>
                                                     <TbCalendarCancel  style={{color: '#dc3545'}}/>
+                                                </button>
+                                                </td>
+                                                <td>
+                                                <button class="btn btn-transparent">
+                                                    <FaPencilAlt  class='text-success'/>  
+                                                </button>
+                                                </td>
+                                                <td>
+                                                <button class="btn btn-transparent" onClick={() => handleShowDelete(appointment.appointId)}>
+                                                    <FaTrash  style={{color: '#dc3545'}}/>
                                                 </button>
                                                 </td>
                                             </tr>
@@ -89,6 +199,35 @@ const MyAppointments = () => {
                     </div>
                 )}
             </div>
+        <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Cancel Appointment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to cancel this appointment?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            No
+          </Button>
+          <Button variant="primary" onClick={handleCancel} disabled={cancelLoading}>
+            Yes, Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showDelete} onHide={handleCloseDelete}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Appointment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this appointment? this action cannot be undone</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDelete}>
+            No
+          </Button>
+          <Button variant="danger" onClick={handleDelete} disabled={cancelLoading}>
+            Yes, Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <ToastContainer />
         </>
     );
 };
