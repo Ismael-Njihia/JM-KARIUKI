@@ -6,6 +6,7 @@ import {toast, ToastContainer} from 'react-toastify'
 import {useNavigate, useLocation} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import '../Assets/Homepage.css'
 
 const Register = () => {
       const navigate = useNavigate();
@@ -46,26 +47,28 @@ const Register = () => {
        };
       
  return (
-    <Container fluid style={{ backgroundColor: '#87CEEB', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Container fluid  className='basic-structure'>
+      <div className='background-image'/>
       <Row>
         <Col >
+        <h1 className='Heading-details'>WELCOME, JM KARIUKI MEMORIAL</h1>
+        <hr className='horizontal-line' />
           <Form onSubmit={handleRegister}>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
+            <Form.Group controlId="formEmail" className='form-details margin-top'>
+              <Form.Control 
                 type="email"
                 placeholder="Enter email"
                 name="email"
                 value={email}
                 onChange={e=>setEmail(e.target.value)}
                 required
+                className='bold-input'
               />
             </Form.Group>
 
             
 
             <Form.Group controlId="formFirstName">
-              <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter your first name"
@@ -73,11 +76,11 @@ const Register = () => {
                 value={firstName}
                 onChange={e=>setFirstName(e.target.value)}
                 required
+                className='bold-input'
               />
             </Form.Group>
 
             <Form.Group controlId="formLastName">
-              <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter your last name"
@@ -85,11 +88,10 @@ const Register = () => {
                 value={lastName}
                 onChange={e=>setLastName(e.target.value)}
                 required
+                className='bold-input'
               />
             </Form.Group>
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password</Form.Label>
-            
+            <Form.Group controlId="formPassword">    
                 <Form.Control
                   type="password"
                   placeholder="Password"
@@ -97,7 +99,19 @@ const Register = () => {
                   value={password}
                   onChange={e=>setPassword(e.target.value)}
                   required
+                  className='bold-input'
                 />
+
+                <Form.Group controlId='formpno'>
+                  <Form.Control
+                  type='text'
+                  placeholder='Enter Your Phone Number'
+                  required
+                  className='bold-input'
+                  >
+
+                  </Form.Control>
+                </Form.Group>
                 
                   {/* <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
                     {passwordShown ? <EyeOff /> : <Eye />}
@@ -105,9 +119,7 @@ const Register = () => {
                 
             </Form.Group>
             
-            <Form.Group controlId="formConfirmPassword">
-              <Form.Label>Confirm Password</Form.Label>
-             
+            <Form.Group controlId="formConfirmPassword">           
                 <Form.Control
                   type="password"
                   placeholder="Confirm Password"
@@ -115,6 +127,7 @@ const Register = () => {
                   value={confirmPassword}
                   onChange={e=>setConfirmPassword(e.target.value)}
                   required
+                  className='bold-input'
                 />
     
     {/* <Button variant="outline-secondary" style={{

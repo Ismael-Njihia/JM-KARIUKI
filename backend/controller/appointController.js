@@ -1,7 +1,7 @@
 import prisma from "../../db/prisma.js";
 import asyncHandler from "../middleware/asyncHandler.js";
 import randomGenerator from "../util/randomGenerator.js";
-
+import sendAppointmentEmail from "../util/SendAppointmentEmail.js";
 //GET ALL APPOINTMENTS
 //GET /api/appointments
 //Private
@@ -59,6 +59,12 @@ const createAppointment = asyncHandler(async(req, res)=>{
     })
 
     if (appointment){
+        //send an email to the doctor
+        const doctorEmail = doctor.email;
+        const doctorName = doctor.firstName + " " + doctor.lastName;
+        const date = new Date(appointDatetime).toDateString();
+        const time = new Date(appointDatetime).toLocaleTimeString();
+        sendAppointmentEmail(doctorEmail, doctorName, date, time, appointId);
         res.status(201).json({
             appointId: appointment.appointId,
             userId: appointment.userId,

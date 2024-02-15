@@ -8,6 +8,8 @@ import {toast} from 'react-toastify'
 import {useNavigate, useLocation} from 'react-router-dom'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { ToastContainer } from 'react-toastify'
+import '../Assets/Homepage.css'
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -48,10 +50,14 @@ const LoginPage = () => {
        }
     }
   return (
-    <Container fluid style={{ backgroundColor: '#87CEEB', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Container  fluid className='basic-structure'>
+    <div className='background-image'/>
+
       <Row>
         <Col >
-          <Form onSubmit={loginHandler}>
+          <h1 className='Heading-details'>JM KARIUKI MEMORIAL HOSPITAL</h1>
+          <hr className='horizontal-line'/>
+          <Form onSubmit={loginHandler} className='form-details'>
             <Form.Group controlId="formEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -95,10 +101,10 @@ const LoginPage = () => {
             </Button>
           </Form>
           <Row className='py-3'>
-            <Col>
+            <Col style={{fontSize: "bold"}}>
              Don't have an Account?{' '}
               <Link to='/register'>
-                Login
+                Register
               </Link>
             </Col>
           </Row>
