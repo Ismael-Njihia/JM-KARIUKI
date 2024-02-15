@@ -41,6 +41,7 @@ const viewDoctorAppointments = () =>{
 
  return (
     <div style={{ backgroundColor: '#87CEEB', minHeight:'100vh' }}>
+      <div className='homepage-image'/>
       {userType === 'patient' && (
         <>
         <h6 className='text-center'>Welcome back,  {userInfo.firstName}!</h6>

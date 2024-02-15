@@ -94,6 +94,15 @@ const cancelAppointment = asyncHandler(async(req, res)=>{
     if(!appointment){
        res.status(404).json({message: "Appointment not found"});
     }
+    //check the status if is already cancelled or complete
+    const isCancelled = appointment.appointStatus === "cancelled";
+    if(isCancelled){
+        res.status(400).json({message: "Appointment already cancelled"});
+    }
+    const isCompleted = appointment.appointStatus === "completed";
+    if(isCompleted){
+        res.status(400).json({message: "Appointment already completed"});
+    }
 
     const updatedAppointment = await prisma.appointment.update({
         where: {appointId: id},
@@ -190,8 +199,7 @@ const deleteAppointment = asyncHandler(async(req, res)=>{
     const appointment = await prisma.appointment.findUnique({where: {appointId: id}});
 
     if(!appointment){
-        res.status(404);
-        throw new Error('Appointment does not exist');
+        res.status(404).json({message: "Appointment not found"});
     }
     const deletedAppointment = await prisma.appointment.delete({where: {appointId: id}});
 

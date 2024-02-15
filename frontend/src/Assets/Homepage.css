@@ -15,11 +15,19 @@
     height: 100%;
     object-fit: cover;
     background-image: url('https://cdn.pixabay.com/photo/2021/02/03/23/09/operating-room-5979687_1280.jpg');
-
     background-size: cover;
     opacity: 0.15;
+}
+.homepage-image{
+    position: absolute;
+ top: 20;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-image: url('https://cdn.pixabay.com/photo/2021/02/03/23/09/operating-room-5979687_1280.jpg');
 
-
+    opacity: 0.19;
 }
 .form-details{
     color: black;
