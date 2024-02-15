@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useGetUsersQuery } from '../../slices/usersApiSlice'; 
 import { toast, ToastContainer } from 'react-toastify';
 import { useAddAppointmentMutation } from '../../slices/ApppointmentApiSlice';
+import '../../Assets/Homepage.css';
 
 const ScheduleAppointment = () => {
  const { userInfo } = useSelector((state) => state.auth);
@@ -54,13 +55,14 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
  console.log("doctorOptions", doctorOptions);
 
  return (
-    <Container fluid style={{ backgroundColor: '#87CEEB', paddingBottom: '50px', paddingTop: '40px', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <Row className="justify-content-center">
-        <Col xs={12} md={8}>
-          <h2 className="text-center">Dear {userInfo.firstName},  Schedule An Appointment Below</h2>
+    <Container fluid className='basic-structure'>
+      <div className='background-image'/>
+      <Row>
+        <Col>
+          <h1 className="text-center Heading-details">Dear {userInfo.firstName},  Schedule An Appointment Below</h1>
           <p className="text-center">Please fill out the form below to submit your Appointment.</p>
           {isUsersLoading && <p>Loading...</p>}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} className='form-details'>
             <Form.Group controlId="appointDate">
               <Form.Label>Appointment Date</Form.Label>
               <Form.Control type="date" value={appointDatetime} onChange={(e) => setAppointDateTime(e.target.value)} required />
