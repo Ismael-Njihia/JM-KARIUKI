@@ -50,7 +50,9 @@ const Appointments = () => {
     }
     const { data: users, loading } = useGetUsersQuery();
     const doctorAppointments = appointments?.filter(appointment => appointment.doctorId === userId);
-    
+    const showCancelledError = () => {
+        toast.error('You cannot prescribe/ Chat  for a cancelled or completed appointment');
+    }
 
     return (
         <>
@@ -100,26 +102,46 @@ const Appointments = () => {
                                             </td>
                                                 <td>{appointment.message}</td>
                                                 <td>
-                                                <button class="btn btn-transparent">
-                                                <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
+                                                    {/* I */}
+                                               {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
+                                                        <button className="btn btn-transparent">
+                                                           <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
                                                     <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
                                                     </LuMessagesSquare>
                                                     </Link>
-                                                </button>
-                                                </td>
+                                                        </button>
+                                                        ) : (
+                                                        <button className="btn btn-transparent"  onClick={showCancelledError}>
+                                                            <span>
+                                                            <LuMessagesSquare  style={{color:'#0d6efd'}} />
+                                                            </span>
+                                                        </button>
+                                                        )}
+
+                                                                                                        </td>
                                                 <td>
                                                 <button class="btn btn-transparent" onClick={() => handleShow(appointment.appointId)}>
                                                     <TbCalendarCancel style={{color: '#dc3545'}}/>
                                                 </button>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-transparent" >
-                                                    <Link to={`/doctor/prescribe/${appointment.appointId}`}>
-                                                        <FaHandHoldingMedical style={{color:'#0d6efd'}} />
-                                                   </Link>
-                                                    </button>
+                                                    {/* if appointment. status == 'cancelled' disable navigating to the chat component link*/}
+                                                    {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
+  <button className="btn btn-transparent">
+    <Link to={`/doctor/prescribe/${appointment.appointId}`}>
+      <FaHandHoldingMedical style={{color:'#0d6efd'}} />
+    </Link>
+  </button>
+) : (
+  <button className="btn btn-transparent" onClick={showCancelledError}>
+    <span>
+      <FaHandHoldingMedical style={{color:'#0d6efd'}} />
+    </span>
+  </button>
+)}
+
                                                 </td>
-                                                <td className={appointment.appointStatus === 'completed' ? 'text-danger' : 'text-success'}>
+                                                <td className={appointment.appointStatus === 'completed' && 'cancelled'? 'text-danger' : 'text-success'}>
                                                 {appointment.appointStatus}
                                                 </td>
                                             </tr>
