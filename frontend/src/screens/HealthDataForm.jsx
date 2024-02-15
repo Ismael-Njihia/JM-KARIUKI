@@ -3,7 +3,8 @@ import { Form, Button, Col, Row, Container } from 'react-bootstrap';
 import {  useNavigate } from 'react-router-dom';
 import { useAddHealthDataMutation } from '../slices/healthDataApiSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import {toast, ToastContainer} from 'react-toastify'
+import {toast, ToastContainer} from 'react-toastify';
+import '../Assets/Homepage.css'
 
 
 const HealthDataForm = () => {
@@ -85,6 +86,7 @@ const HealthDataForm = () => {
       toast.error(res.error?.data?.errMessage);
     }else{
     toast.success('Health Data Submitted Successfully');
+    navigate('/')
     }
     
    } catch (error) {
@@ -97,7 +99,7 @@ const HealthDataForm = () => {
  // Conditional check for redirecting Admins and Doctors
  useEffect(() => {
    if (userInfo?.userType === 'admin' || userInfo?.userType === 'doctor') {
-     navigate('/dashboard'); // Redirect to the dashboard
+     navigate('/'); 
    }
 
    
@@ -105,11 +107,13 @@ const HealthDataForm = () => {
 
 
  return (
-   <Container fluid style={{ backgroundColor: '#87CEEB',paddingBottom:'50px',paddingTop:'40px', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+   <Container fluid className='basic-structure'>
+
+    <div className='homepage-image'/>
    <Row className="justify-content-center">
      <Col xs={12} md={12}>
-       <h2 className="text-center">Health Data Form</h2>
-       <p className="text-center">Please fill out the form below to submit your health data.</p>
+       <p className="text-center Heading-details">To Continue, Please fill out the form below.</p>
+       <hr className='horizontal-line' />
        {isLoading && <p>Loading...</p>}
        <Form onSubmit={handleSubmit}>
        <Form.Group controlId="disabled">
@@ -141,21 +145,19 @@ const HealthDataForm = () => {
            <Form.Label>Mental Health Status (One item per line)</Form.Label>
            <Form.Control as="textarea" name="mentalHealthStatus" value={mentalHealthStatus} onChange={handleMentalHealthStatusChange} />
          </Form.Group>
-         <Button type="submit"style={{
-
-
-backgroundColor: '#87CEEB',
-color: 'black',
-border: '2px solid black',
-borderRadius: '10px',
-padding: '10px 20px',
-fontSize: '15px',
-fontWeight: 'bold',
-cursor: 'pointer',
-outline: 'none',
-width: '100%',
-marginTop: '30px',
-}}disabled={isLoading}>Submit</Button>
+         <Button type="submit"style={{  
+        backgroundColor: '#87CEEB',
+        color: 'black',
+        border: '2px solid black',
+        borderRadius: '10px',
+        padding: '10px 20px',
+        fontSize: '15px',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        outline: 'none',
+        width: '100%',
+        marginTop: '30px',
+        }}disabled={isLoading}>Submit</Button>
        </Form>
      </Col>
      <ToastContainer/>

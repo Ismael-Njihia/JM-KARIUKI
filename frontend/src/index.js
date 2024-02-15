@@ -25,6 +25,7 @@ import Prescriptions from './screens/Doctor/Prescriptions';
 import Doctors from './screens/Doctor/Doctors';
 import ScheduleAppointment from './screens/Appointments/ScheduleAppointment';
 import Chat from './screens/Chat';
+import UserProfile from './screens/Doctor/UserProfile';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,8 @@ const routes = createBrowserRouter(
        <Route path='/doctor' element={<Doctors />} />
        <Route path='/schedule_appointment' element={<ScheduleAppointment />} />
         <Route path='/chat/:appointId/:id' element={<Chat />} />
+        <Route path='/user/:id' element={<UserProfile />} />
+        
         </Route>
 
     </Route>

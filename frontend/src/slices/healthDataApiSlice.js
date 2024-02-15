@@ -6,13 +6,7 @@ export const healthDataApiSlice = apiSlice.injectEndpoints({
             query: () => `/api/healthdata`,
             providesTags: ["HealthData"],
         }),
-        fetchHealthDataByUser: builder.mutation({
-            query: (userId) => ({
-           url: `/api/healthdata/${userId}`,
-           method: 'GET',
-        }),
-            invalidatesTags: ["HealthData"],
-        }),
+       
         deleteHealthData: builder.mutation({
             query: (healthDataId) => ({
                 url: `/api/healthdata/${healthDataId}`,
@@ -37,11 +31,19 @@ export const healthDataApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["HealthData"],
         }),
+        getHealthDataByUser: builder.query({
+            query: (userId) => ({
+                url: `/api/health/user/${userId}`,
+                method: 'GET',
+
+            }),
+         })
+        
     }),
 });
 export const{
     useFetchHealthDataQuery,
-    useFetchHealthDataByUserMutation,
+    useGetHealthDataByUserQuery,
     useDeleteHealthDataMutation,
     useEditHealthDataMutation,
     useAddHealthDataMutation,

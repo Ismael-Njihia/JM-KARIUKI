@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import '../../Assets/Homepage.css';
 const Doctors = () => {
     const {userInfo} = useSelector(state => state.auth)
   
@@ -16,12 +17,13 @@ const Doctors = () => {
         <p>Loading...</p>
       ) : (
           <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh'}}>
-            <h2 className='text-center'>All patients</h2>
+            <div className='homepage-image'/>
+            <h2 className='text-center Heading-details'>All patients</h2>
+            <hr className="horizontal-line"/>
             {users ? (
               <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width:'90%', marginLeft:'50px' }}>
                 <thead>
                   <tr>
-                    <th>User ID</th>
                     <th>Email</th>
                     <th>First Name</th>
                     <th>Last Name</th>
@@ -30,12 +32,8 @@ const Doctors = () => {
                 </thead>
                 <tbody>
                   {patients.map((patient) => (
-                    <tr key={patient.email}>
-                      <td>
-                      <Link to = {`/doctor/patient/${patient.userId}`}>
-                      {patient.userId}
-                      </Link></td>
-                      <td>{patient.email}</td>
+                    <tr key={patient.userId}>
+                      <td><Link to={`/user/${patient.userId}`}>{patient.email} </Link></td>
                       <td>{patient.firstName}</td>
                       <td>{patient.lastName}</td>
                       <td>{patient.userType}</td>
