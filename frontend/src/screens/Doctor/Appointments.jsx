@@ -141,7 +141,7 @@ const Appointments = () => {
 )}
 
                                                 </td>
-                                                <td className={appointment.appointStatus === 'completed' && 'cancelled'? 'text-danger' : 'text-success'}>
+                                                <td className={appointment.appointStatus === 'scheduled' ? 'text-success' : 'text-danger'}>
                                                 {appointment.appointStatus}
                                                 </td>
                                             </tr>
