@@ -17,12 +17,15 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
  const [doctorId, setDoctorId] = useState('');
  const [message, setMessage] = useState('');
 
+
  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
+
+      const appointDateTimeCombined = `${appointDatetime}{${timestamp}}`;
+      console.log(appointDateTimeCombined);
       const  appointmentData = {
-        appointDatetime,
-            timestamp,
+        appointDatetime: appointDateTimeCombined,
             doctorId,
             message,
 

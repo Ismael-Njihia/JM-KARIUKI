@@ -110,6 +110,9 @@ const MyAppointments = () => {
             handleCloseEdit();
         }
     }
+    const showCancelledError = () => {
+      toast.error('You cannot Chat  for a cancelled or completed appointment');
+  }
     return (
         <>
             <div>
@@ -166,12 +169,20 @@ const MyAppointments = () => {
                                                 {appointment.appointStatus}
                                                 </td>
                                                 <td>
-                                                <button class="btn btn-transparent">
-                                                <Link to={`/chat/${appointment.appointId}/${appointment.doctorId}`}>
+                                                {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
+                                                        <button className="btn btn-transparent">
+                                                           <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
                                                     <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
                                                     </LuMessagesSquare>
                                                     </Link>
-                                                </button>
+                                                        </button>
+                                                        ) : (
+                                                        <button className="btn btn-transparent"  onClick={showCancelledError}>
+                                                            <span>
+                                                            <LuMessagesSquare  style={{color:'#0d6efd'}} />
+                                                            </span>
+                                                        </button>
+                                                        )}
                                                 </td>
                                                 <td>
                                                 <button class="btn btn-transparent" onClick={() => handleShow(appointment.appointId)}>

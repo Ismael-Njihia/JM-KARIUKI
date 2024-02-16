@@ -96,9 +96,8 @@ const Appointments = () => {
                                                         <td>Unknown</td>
                                                     </>
                                                 )}
-                                                <td>{appointment.appointDatetime}</td>
-                                               <td>
-                                            {appointment.timestamp.split('T')[1].split('.')[0]}
+                                                <td>  {appointment.appointDatetime}</td>
+                                   <td>  {appointment.appointDatetime.split('T')[1]}
                                             </td>
                                                 <td>{appointment.message}</td>
                                                 <td>
