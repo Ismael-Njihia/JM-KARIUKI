@@ -27,6 +27,7 @@ const Register = () => {
       const [lastName, setLastName] = useState('');
       const [email, setEmail] = useState('');
        const [password, setPassword] = useState('');
+       const [pno, setPno] = useState('');
        const [confirmPassword, setConfirmPassword] = useState('');
   
   
@@ -34,11 +35,11 @@ const Register = () => {
        const handleRegister = async (e) => {
           e.preventDefault();
           try {
-              const res = await register({firstName,lastName, email, password}).unwrap();
+              const res = await register({firstName,lastName, email, password, pno}).unwrap();
               console.log(res);
               dispatch(setCredentials(res));
               toast.success('Registration Successful');
-              navigate('/');
+              navigate('/health');
           } catch (error) {
               toast.error(error?.data?.message || 'Something went wrong')
               console.log(error);
@@ -91,6 +92,21 @@ const Register = () => {
                 className='bold-input'
               />
             </Form.Group>
+
+            <Form.Group controlId='formpno'>
+                  <Form.Control
+                  type='text'
+                  value={pno}
+                  onChange={e=>setPno(e.target.value)}
+                  placeholder='Enter Your Phone Number'
+                  required
+                  className='bold-input'
+                  >
+
+                  </Form.Control>
+                </Form.Group>
+
+
             <Form.Group controlId="formPassword">    
                 <Form.Control
                   type="password"
@@ -102,16 +118,7 @@ const Register = () => {
                   className='bold-input'
                 />
 
-                <Form.Group controlId='formpno'>
-                  <Form.Control
-                  type='text'
-                  placeholder='Enter Your Phone Number'
-                  required
-                  className='bold-input'
-                  >
-
-                  </Form.Control>
-                </Form.Group>
+              
                 
                   {/* <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
                     {passwordShown ? <EyeOff /> : <Eye />}

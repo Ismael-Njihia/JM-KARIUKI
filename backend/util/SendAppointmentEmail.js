@@ -5,7 +5,7 @@ dotenv.config();
 const SenderEmail= process.env.SENDER_EMAIL;
 const SenderPassword= process.env.SENDER_PASSWORD;
 
-const sendAppointmentEmail = (email, name, date, time, appointId) => {
+const sendAppointmentEmail = (email, name, date, time, appointId, docId) => {
     try{
         const emailTransporter = nodemailer.createTransport({
             service: 'gmail',
@@ -20,6 +20,7 @@ const sendAppointmentEmail = (email, name, date, time, appointId) => {
             subject: 'You Have an Appointment',
             html: `<h1>Hello Doctor ${name},</h1>
             <p>You have an appointment on ${date} at ${time}. The appointment ID is ${appointId}</p>
+            <p>Click <a href='http://localhost:3000/chat/${appointId}/${docId}'>here</a> to view the appointment</p>
             <p>Regards,</p>
             <p> JM Kariuki Memorial Hospital</p>`
         };

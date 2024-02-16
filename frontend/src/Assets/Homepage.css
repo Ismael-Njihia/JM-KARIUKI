@@ -20,14 +20,15 @@
 }
 .homepage-image{
     position: absolute;
- top: 20;
+ top: 20p;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     background-image: url('https://cdn.pixabay.com/photo/2021/02/03/23/09/operating-room-5979687_1280.jpg');
 
-    opacity: 0.19;
+    opacity: 0.1;
+    pointer-events: none;
 }
 .form-details{
     color: black;
@@ -67,3 +68,10 @@
     font-weight: bold;
     margin-bottom: 10px;
 }
+.Health-data{
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+

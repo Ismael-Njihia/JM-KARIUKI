@@ -9,6 +9,9 @@ import { FaHandHoldingMedical } from "react-icons/fa";
 import {useCancelAppointmentMutation} from '../../slices/ApppointmentApiSlice';
 import { useState } from 'react';
 import {toast, ToastContainer} from 'react-toastify';
+import '../../Assets/Homepage.css';
+
+
 const Appointments = () => {
     const { userInfo } = useSelector(state => state.auth);
     const userId = userInfo.userId;
@@ -58,9 +61,10 @@ const Appointments = () => {
         <>
             <div>
                     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
-                        <h2 className='text-center'>Doctor {firstName} Appointments</h2>
+                      <div className='homepage-image'/>
+                        <h6 className='text-center' style={{margin: "10px"}}>Doctor {firstName} Appointments</h6>
                         {doctorAppointments ? (
-                            <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width: '90%', marginLeft: '50px' }}>
+                            <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width: '90%', marginLeft: '50px', fontSize:"13px"}}>
                                 <thead>
                                     <tr>
                                         <th>Appointment Id</th>
@@ -82,10 +86,10 @@ const Appointments = () => {
                                         return (
                                             <tr key={appointment.appointId}>
 
-                                                <td> <Link to= {`/doctor/view_appointment/${appointment.appointId}`}>{appointment.appointId}</Link> </td>
+                                                <td> {appointment.appointId}</td>
                                                 {patientDetails ? (
                                                     <>
-                                                        <td>{patientDetails.email}</td>
+                                                        <td> <Link to={`/user/${patientDetails.userId}`}>{patientDetails.email} </Link></td>
                                                         <td>{patientDetails.firstName}</td>
                                                         <td>{patientDetails.lastName}</td>
                                                     </>

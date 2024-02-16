@@ -22,28 +22,30 @@ const getAllUsers = asyncHandler(async(req, res)=>{
 //Post /api/users/register
 //Public
 const register = asyncHandler(async(req, res)=>{
-    const {email, password, firstName, lastName} = req.body;
+    const {email, password, firstName, lastName, pno} = req.body;
     const timeStamp = new Date().toISOString();
 
-    const userType = 'admin';
+    const userType = 'patient';
     const hashedPassword = await encryptPassword(password);
    
     if(!email || !password || !firstName || !lastName){
-        res.status(400);
-        throw new Error('Please fill all fields');
+       res.status(400).json({ message: 'Please fill all fields' });   
+    }
+    //ensure pno does not exist in database
+    const userPNO = await prisma.user.findFirst({where: {pno}});
+    if(userPNO){
+        res.status(400).json({ message: 'Phone number already exists' });
     }
     const userId = uuidGenerator();
     //check user exists by userId
     const uniqueid = await prisma.user.findUnique({where: {userId}});
     if(uniqueid){
-        res.status(400);
-        throw new Error('User already exists');
+       res.status(400).json({ message: 'Unknown Error' });
     }
     //check if user exists
     const userExists = await prisma.user.findFirst({where: {email}});
     if(userExists){
-        res.status(400);
-        throw new Error('User already exists');
+        res.status(400).json({ message: 'Email already exists' });
     }
     const user = await prisma.user.create({
         data: {
@@ -53,7 +55,8 @@ const register = asyncHandler(async(req, res)=>{
             firstName,
             lastName,
             userType,
-            timeStamp: timeStamp
+            timeStamp: timeStamp,
+            pno
         }
     })
     if(user){

@@ -64,6 +64,7 @@ model user {
   userId                                     String         @id
   description                                String?
   userType                                   String?
+  pno                                        String?
   appointment                                appointment[]
   healthData                                 healthData[]
   messageTable_messageTable_receiverIdTouser messageTable[] @relation("messageTable_receiverIdTouser")

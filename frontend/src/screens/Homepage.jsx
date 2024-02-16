@@ -93,52 +93,9 @@ const viewDoctorAppointments = () =>{
           </Col>
           </Row>
           <Row style={{marginRight:'7rem', marginLeft:'7rem'}}>
-          <Col>
-          <Card style={{backgroundColor: '#87CEFA', boxShadow: '0 10px 28px 0 rgba(0, 0, 0, 0.2)'  }}>
-            <Card.Body>
-              <FaCalendarAlt size={32} />
-              <Card.Title> Medical INfo </Card.Title>
-              <Button style={{
-
-
-            backgroundColor: '#87CEEB',
-            color: 'black',
-            border: '2px solid black',
-            borderRadius: '10px',
-            padding: '10px 20px',
-            fontSize: '15px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            outline: 'none',
-            width: '100%',
-            marginTop: '30px',
-            }} onClick={viewMedicalInfo} >View Medical Info</Button>
-            </Card.Body>
-          </Card>
-          </Col>
-          <Col>
-          <Card style={{backgroundColor: '#87CEFC' , marginBottom:'2rem', boxShadow: '0 10px 28px 0 rgba(0, 0, 0, 0.2)' }}>
-            <Card.Body>
-              <FaCalendarAlt size={32} />
-              <Card.Title>Health Data</Card.Title>
-              <Button style={{
-
-
-            backgroundColor: '#87CEEB',
-            color: 'black',
-            border: '2px solid black',
-            borderRadius: '10px',
-            padding: '10px 20px',
-            fontSize: '15px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            outline: 'none',
-            width: '100%',
-            marginTop: '30px',
-            }} onClick={viewHealthData} >View Health Data</Button>
-            </Card.Body>
-          </Card>
-          </Col>
+          
+          
+          
           
           </Row>
         
@@ -147,31 +104,9 @@ const viewDoctorAppointments = () =>{
       {/* Doctor Home Page */}
        {userType === 'doctor' && (
         <>
-        <h1 className='text-center'>Welcome back,  {userInfo.firstName}!</h1>
+        <h3 className='text-center'>Welcome back,  {userInfo.firstName}!</h3>
         <Row style={{marginRight:'7rem', marginLeft:'7rem', marginBottom:'4rem', marginTop:'4rem'}}>
-          <Col>
-          <Card style={{backgroundColor: '#87CEEB' , boxShadow: '0 10px 28px 0 rgba(0, 0, 0, 0.2)' }}>
-            <Card.Body>
-              <FaCapsules size={32} />
-              <Card.Title>Prescriptions </Card.Title>
-              <Button onClick={scheduleAppointment} style={{
-
-
-            backgroundColor: '#87CEEB',
-            color: 'black',
-            border: '2px solid black',
-            borderRadius: '10px',
-            padding: '10px 20px',
-            fontSize: '15px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            outline: 'none',
-            width: '100%',
-            marginTop: '30px',
-            }}>Prescribe Now</Button>
-            </Card.Body>
-          </Card>
-      </Col>
+          
       <Col>
           <Card style={{backgroundColor: '#87CEFA', boxShadow: '0 10px 28px 0 rgba(0, 0, 0, 0.2)' }}>
             <Card.Body>

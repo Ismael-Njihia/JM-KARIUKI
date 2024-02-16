@@ -60,11 +60,12 @@ const createAppointment = asyncHandler(async(req, res)=>{
 
     if (appointment){
         //send an email to the doctor
+        const docId = doctor.userId;
         const doctorEmail = doctor.email;
         const doctorName = doctor.firstName + " " + doctor.lastName;
         const date = new Date(appointDatetime).toDateString();
         const time = new Date(appointDatetime).toLocaleTimeString();
-        sendAppointmentEmail(doctorEmail, doctorName, date, time, appointId);
+        sendAppointmentEmail(doctorEmail, doctorName, date, time, appointId, docId);
         res.status(201).json({
             appointId: appointment.appointId,
             userId: appointment.userId,

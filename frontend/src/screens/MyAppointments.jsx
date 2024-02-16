@@ -13,6 +13,8 @@ import { useCancelAppointmentMutation } from '../slices/ApppointmentApiSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import {useDeleteAppointmentMutation} from '../slices/ApppointmentApiSlice';
 import {useEditAppointmentMutation} from '../slices/ApppointmentApiSlice';
+import '../Assets/Homepage.css';
+
 const MyAppointments = () => {
     const { userInfo } = useSelector(state => state.auth);
     const userId = userInfo.userId;
@@ -120,6 +122,7 @@ const MyAppointments = () => {
                     <p>Loading...</p>
                 ) : (
                     <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
+                      <div className='homepage-image'/>
                         <h2 className='text-center'>Patient {firstName} Appointments</h2>
                         {patientAppointments && patientAppointments.length >  0 ? (
                             <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width: '90%', marginLeft: '50px', fontSize:"12px" }}>

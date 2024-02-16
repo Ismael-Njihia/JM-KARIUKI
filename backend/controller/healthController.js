@@ -138,30 +138,27 @@ const editHealthRecord = asyncHandler(async(req, res)=>{
 
 const getHealthRecord = asyncHandler(async(req, res)=>{
     const {id} = req.params;
+    console.log(id);
 
     if(!id){
-        res.status(400);
-        throw new Error('Please provide a userId');
+      res.status(400).json({message: 'Please provide a user id'	})
     }
     //check if the user exists
     const user = await prisma.user.findUnique({where: {userId: id}});
     if(!user){
-        res.status(400);
-        throw new Error('User does not exist');
+        res.status(400).json({message: 'User does not exist'})
     }
     //ensure the user has a health record
     const health = await prisma.healthData.findFirst({where: {userId: id}});
 
     if(!health){
-        res.status(400);
-        throw new Error('User does not have a health record');
+        res.status(400).json({message: 'User does not have a health record'})
     }
 
     //return message and data
     if (health){
         res.status(201).json({
-            message: "Health record retrieved successfully",
-            data: health
+             health
         })
     }
 })
