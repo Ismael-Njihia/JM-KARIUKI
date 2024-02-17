@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import '../Assets/chat.css'
 import { IoIosSend } from "react-icons/io";
+import { Link } from 'react-router-dom';
 
 
 const formatTimestamp = (timestamp) => {
@@ -54,6 +55,7 @@ const Chat = () => {
   const patientDetails = users?.find(user => user.userId === id);
   const { userInfo } = useSelector(state => state.auth);
   const userId = userInfo.userId;
+  const userTypeLogged = userInfo.userType;
   const [sendMessage, { isLoading }] = useSendMessageMutation();
  
 
@@ -108,6 +110,15 @@ const Chat = () => {
           <Row>
             <Col md={8}>
               <ListGroup variant='flush'>
+                <ListGroup.Item>
+                  {
+                    userTypeLogged === 'doctor' ? (
+                      <p><Link to ={`/user/${appointment?.userId}`}>Patient Profile</Link> </p>
+                    ):(
+                      <p><strong>Patient</strong></p>
+                    )
+                  }
+                  </ListGroup.Item>
                 <ListGroup.Item>
                   <strong>Appointment</strong>
                 </ListGroup.Item>

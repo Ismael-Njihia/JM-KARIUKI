@@ -15,6 +15,8 @@ import '../../Assets/Homepage.css';
 const Appointments = () => {
     const { userInfo } = useSelector(state => state.auth);
     const userId = userInfo.userId;
+    const userType = userInfo.userType;
+    console.log(userInfo, 'userInfo')
     const firstName = userInfo.firstName;
     const { data: appointments, isLoading } = useFetchAppointmentsQuery();
     const [show, setShow] = useState(false);
@@ -131,18 +133,18 @@ const Appointments = () => {
                                                 <td>
                                                     {/* if appointment. status == 'cancelled' disable navigating to the chat component link*/}
                                                     {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
-  <button className="btn btn-transparent">
-    <Link to={`/doctor/prescribe/${appointment.appointId}`}>
-      <FaHandHoldingMedical style={{color:'#0d6efd'}} />
-    </Link>
-  </button>
-) : (
-  <button className="btn btn-transparent" onClick={showCancelledError}>
-    <span>
-      <FaHandHoldingMedical style={{color:'#0d6efd'}} />
-    </span>
-  </button>
-)}
+                                                <button className="btn btn-transparent">
+                                                  <Link to={`/doctor/prescribe/${appointment.appointId}`}>
+                                                    <FaHandHoldingMedical style={{color:'#0d6efd'}} />
+                                                  </Link>
+                                                </button>
+                                              ) : (
+                                                <button className="btn btn-transparent" onClick={showCancelledError}>
+                                                  <span>
+                                                    <FaHandHoldingMedical style={{color:'#0d6efd'}} />
+                                                  </span>
+                                                </button>
+                                              )}
 
                                                 </td>
                                                 <td className={appointment.appointStatus === 'scheduled' ? 'text-success' : 'text-danger'}>
