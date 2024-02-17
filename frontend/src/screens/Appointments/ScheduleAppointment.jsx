@@ -6,6 +6,7 @@ import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import { useAddAppointmentMutation } from '../../slices/ApppointmentApiSlice';
 import '../../Assets/Homepage.css';
+import DatePicker from 'react-datepicker';
 
 const ScheduleAppointment = () => {
  const { userInfo } = useSelector((state) => state.auth);
@@ -17,6 +18,13 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
  const [timestamp, setTimestamp] = useState('');
  const [doctorId, setDoctorId] = useState('');
  const [message, setMessage] = useState('');
+
+
+
+  const currentDate = new Date(); 
+
+  const currentTime = currentDate.getHours() * 3600 + currentDate.getMinutes() * 60 + currentDate.getSeconds();
+  const selectedTime = parseInt(timestamp.split(':')[0]) * 3600 + parseInt(timestamp.split(':')[1]) * 60;
 
 
  const handleSubmit = async (e) => {
@@ -57,6 +65,24 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
 
  console.log("doctorOptions", doctorOptions);
 
+ const generateTimeSlots = () => {
+  const slots = [];
+
+  // Get the current hours
+  const currentHours = new Date().getHours();
+
+  for (let i = 9; i <= 20; i++) {
+    // Skip 13:00 (1pm) and the hours already passed today
+    if (i === 13 || i <= currentHours) continue;
+    slots.push(i + ':00');
+  }
+
+  return slots;
+};
+
+const timeSlots = generateTimeSlots();
+
+
  return (
     <Container fluid className='basic-structure'>
       <div className='background-image'/>
@@ -66,14 +92,35 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
           <p className="text-center">Please fill out the form below to submit your Appointment.</p>
           {isUsersLoading && <p>Loading...</p>}
           <Form onSubmit={handleSubmit} className='form-details'>
-            <Form.Group controlId="appointDate">
-              <Form.Label>Appointment Date</Form.Label>
-              <Form.Control type="date" value={appointDatetime} onChange={(e) => setAppointDateTime(e.target.value)} required />
-            </Form.Group>
-            <Form.Group controlId="appointTime">
-              <Form.Label>Appointment Time</Form.Label>
-              <Form.Control type="time" value={timestamp} onChange={(e) => setTimestamp(e.target.value)} required />
-            </Form.Group>
+          <Form.Group controlId="appointDate">
+          <Form.Label>Appointment Date</Form.Label>
+          <Form.Control
+          type='date'
+            selected={appointDatetime} 
+            onChange={(e) => {
+              setAppointDateTime(e.target.value); 
+            }} 
+            required 
+            dateFormat="dd/MM/yyyy"
+            min={new Date().toISOString().split('T')[0]}
+              placeholderText="Select a date"
+
+          />
+        </Form.Group>
+        <Form.Group controlId="appointTime">
+  <Form.Label>Appointment Time</Form.Label>
+  <Form.Select value={timestamp} onChange={(e) => setTimestamp(e.target.value)} required>
+    <option value="" disabled selected>Select a time</option>
+    {timeSlots?.map((time, i) => (
+      <option key={i} value={time}>
+        {time}
+      </option>
+    ))}
+  </Form.Select>
+</Form.Group>
+
+
+
             <Form.Group controlId="doctorId">
               <Form.Label>Select Doctor</Form.Label>
               <Form.Select value={doctorId} onChange={(e) => setDoctorId(e.target.value)} required>
