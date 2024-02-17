@@ -57,6 +57,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE'
             }),
             invalidatesTags: ['Users']
+        }),
+        getAppointmentsOfaDoc: builder.query({
+            query: (id) => ({
+                url: `${USERS_URL}/${id}/appointments`,
+                method: 'GET'
+            })
         })
     })
 })
@@ -69,5 +75,6 @@ export const {
     useGetUserByIdQuery,
     useGetTransactionsOfUserQuery,
     useUpdateUserMutation,
-    useDeleteUserMutation
+    useDeleteUserMutation,
+    useGetAppointmentsOfaDocQuery
 } = usersApiSlice;

@@ -113,9 +113,10 @@ const Chat = () => {
                 <ListGroup.Item>
                   {
                     userTypeLogged === 'doctor' ? (
-                      <p><Link to ={`/user/${appointment?.userId}`}>Patient Profile</Link> </p>
+                      <p><Link to ={`/user/${appointment?.userId}`} target='_blank'>Patient Profile</Link> </p>
                     ):(
-                      <p><strong>Patient</strong></p>
+                      <p><a href={`/doc/${appointment?.doctorId}`} target="_blank" rel="noopener noreferrer">Doctor Profile</a></p>
+
                     )
                   }
                   </ListGroup.Item>

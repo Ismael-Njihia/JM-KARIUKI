@@ -30,10 +30,10 @@ const viewAppointments = () => {
   navigate('/myappointments');
 }
 const viewMedicalInfo = () => {
-  navigate('/medical-info');
+  navigate('/patients');
 }
 const viewHealthData = () => {
-  navigate('/health-data');
+  navigate('/doctor');
 }
 const viewDoctorAppointments = () =>{
   navigate('/appointments')

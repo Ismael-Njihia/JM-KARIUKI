@@ -148,6 +148,34 @@ const logout = asyncHandler(async(req, res)=>{
     })
     res.json({message: 'User logged out'})
 })
+//Get ALL APPOINTMENTS OF A DOC
+//GET /api/users/:id/appointments
+//Private
 
+const getAppointmentsOfaDoc = asyncHandler(async(req, res)=>{
+    const docId = req.params.id;
+    if(!docId){
+        res.status(400).json({message: 'Doctor Id is required'});
+    }
+    //make sure the userType is doctor
+    const user = await prisma.user.findUnique({where: {userId: docId}});
+    if(!user){
+        res.status(404).json({message: 'Doctor not found'});
+    }
+    const userType = user.userType;
+    if(userType !== 'doctor'){
+        res.status(400).json({message: 'User is not a doctor'});
+    }
+    const appointments = await prisma.appointment.findMany({
+        where: {doctorId: docId}
+    });
+    res.json(appointments);
+})
 
-export { getAllUsers, register, login, getUserById, deleteUserById, logout }
+export { getAllUsers, 
+    register, 
+    login, 
+    getUserById,
+     deleteUserById,
+     getAppointmentsOfaDoc,
+      logout }
