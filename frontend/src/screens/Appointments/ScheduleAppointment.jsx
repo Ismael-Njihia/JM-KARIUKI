@@ -22,8 +22,8 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-
-      const appointDateTimeCombined = `${appointDatetime}{${timestamp}}`;
+      
+      const appointDateTimeCombined = `${appointDatetime}T${timestamp}`;
       console.log(appointDateTimeCombined);
       const  appointmentData = {
         appointDatetime: appointDateTimeCombined,

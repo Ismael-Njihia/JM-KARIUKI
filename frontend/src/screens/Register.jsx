@@ -35,10 +35,16 @@ const Register = () => {
        const handleRegister = async (e) => {
           e.preventDefault();
           try {
-              const res = await register({firstName,lastName, email, password, pno}).unwrap();
+
+              const res = await register({firstName, lastName, email, password, pno}).unwrap();
               console.log(res);
+              if(res.error){
+                toast.error(res.error?.data?.message || 'Something went wrong')
+              }
+              else{
               dispatch(setCredentials(res));
               toast.success('Registration Successful');
+              }
               navigate('/health');
           } catch (error) {
               toast.error(error?.data?.message || 'Something went wrong')

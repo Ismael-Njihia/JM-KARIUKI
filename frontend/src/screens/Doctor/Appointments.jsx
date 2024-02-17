@@ -100,9 +100,8 @@ const Appointments = () => {
                                                         <td>Unknown</td>
                                                     </>
                                                 )}
-                                                <td>  {appointment.appointDatetime}</td>
-                                   <td>  {appointment.appointDatetime.split('T')[1]}
-                                            </td>
+                                                 <td>{appointment.appointDatetime.split('T')[0]}</td>
+                                                <td>{appointment.appointDatetime.split('T')[1]}</td>
                                                 <td>{appointment.message}</td>
                                                 <td>
                                                     {/* I */}
