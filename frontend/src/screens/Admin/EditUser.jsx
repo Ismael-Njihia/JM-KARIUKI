@@ -1,27 +1,25 @@
 import { Link } from 'react-router-dom'
-import {useRegisterMutation} from '../slices/usersApiSlice'
 import {useDispatch, useSelector} from 'react-redux'
-import { setCredentials } from '../slices/AuthSlice'
+import { setCredentials } from '../../slices/AuthSlice'
 import {toast, ToastContainer} from 'react-toastify'
-import {useNavigate, useLocation} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import '../Assets/Homepage.css'
-import {useUpdateUserMutation} from '../slices/usersApiSlice'
+import '../../Assets/Homepage.css'
+import {useUpdateUserMutation} from '../../slices/usersApiSlice'
 import { useParams } from 'react-router-dom'
-import {useGetUserByIdQuery} from '../slices/usersApiSlice'
-import {useLogoutMutation} from "../slices/usersApiSlice"
-import { logout } from '../slices/AuthSlice';
+import {useGetUserByIdQuery} from '../../slices/usersApiSlice'
 
-const EditProfile = () => {
+
+
+const EditUser = () => {
       const navigate = useNavigate();
       const dispatch = useDispatch();
-      const [register, {isLoading}] = useRegisterMutation();
       const [updateUser, {isUpdating}] = useUpdateUserMutation();
       const {userInfo } = useSelector(state => state.auth);
       const {id} = useParams();
-      const {data: user, isFetching, refetch} = useGetUserByIdQuery(id);
-      const [logoutBackendCall] = useLogoutMutation()
+      const {data: user, isFetching} = useGetUserByIdQuery(id);
+    
 
       
   useEffect(() => {
@@ -30,6 +28,7 @@ const EditProfile = () => {
       setLastName(user.lastName)
       setEmail(user.email)
       setPno(user.pno)
+      setUserType(user.userType)
     }
 
   } ,[user])
@@ -38,6 +37,7 @@ const EditProfile = () => {
       const [lastName, setLastName] = useState('');
       const [email, setEmail] = useState('');
        const [pno, setPno] = useState('');
+       const [userType, setUserType] = useState('');
       
   
   
@@ -52,7 +52,8 @@ const EditProfile = () => {
                   firstName, 
                   lastName, 
                   email, 
-                  pno
+                  pno,
+                  userType
                 },
                 
                });
@@ -63,13 +64,6 @@ const EditProfile = () => {
               else{
               dispatch(setCredentials(res));
               toast.success('Profile Updated  Successful please login again');
-              const result = await logoutBackendCall();
-              if (result?.error) {
-                toast.error(result?.error?.data?.message || 'Something went wrong')
-              }
-              toast.success("Logged out successfully")
-              dispatch(logout());
-              navigate('/login');
               }
           } catch (error) {
               toast.error(error?.data?.message || 'Something went wrong')
@@ -84,7 +78,7 @@ const EditProfile = () => {
       <div className='background-image'/>
       <Row>
         <Col >
-        <h1 className='Heading-details'>EDIT PROFILE</h1>
+        <h1 className='Heading-details'>EDIT USER PROFILE</h1>
         <hr className='horizontal-line' />
           <Form onSubmit={handleEdit}>
             <Form.Group controlId="formEmail" className='form-details margin-top'>
@@ -138,6 +132,20 @@ const EditProfile = () => {
                   </Form.Control>
                 </Form.Group>
 
+                <Form.Group controlId='formUserType'>
+                  <Form.Control
+                  as='select'
+                  value={userType}
+                  onChange={e=>setUserType(e.target.value)}
+                  required
+                  className='bold-input'
+                  >
+                    <option value='patient'>Patient</option>
+                    <option value='doctor'>Doctor</option>
+                    <option value='admin'>Admin</option>
+                  </Form.Control>
+                </Form.Group>
+
             <Button variant="primary" type="submit" style={{
 
                   backgroundColor: '#87CEEB',
@@ -151,13 +159,13 @@ const EditProfile = () => {
                   outline: 'none',
                   width: '100%',
                   marginTop: '30px',
-                  }}disabled={isLoading}>
+                  }}>
               Update
             </Button>
           </Form>
           
         </Col>
-        <Link to='/profile' style={{textDecoration:'none', color:'black'}}>
+        <Link to={`/admin/users/${id}`} style={{textDecoration:'none', color:'black'}}>
           <Button variant="primary" style={{ margin: '10px' }}>
             Back to Profile
           </Button>
@@ -168,4 +176,4 @@ const EditProfile = () => {
  );
 };
 
-export default EditProfile;
+export default EditUser;

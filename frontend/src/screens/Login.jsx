@@ -20,6 +20,7 @@ const LoginPage = () => {
 
     const [login, {isLoading}] = useLoginMutation();
     const {userInfo } = useSelector(state => state.auth);
+    const isAdmin = userInfo?.userType === 'admin';
 
     const location = useLocation();
     const redirect = location.search ? location.search.split('=')[1] : '/';
@@ -27,9 +28,16 @@ const LoginPage = () => {
 
     useEffect(()=>{
         if(userInfo){
-            navigate(redirect);
+          navigate(redirect);
         }
+
     },[navigate, userInfo, redirect])
+
+    useEffect(() => {
+        if (isAdmin) {
+            navigate('/admin/dashboard');
+        }
+    }, [isAdmin, userInfo]);
     
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
