@@ -18,7 +18,7 @@ const EditProfile = () => {
       const [updateUser, {isUpdating}] = useUpdateUserMutation();
       const {userInfo } = useSelector(state => state.auth);
       const {id} = useParams();
-      const {data: user, loading:userIsLoading} = useGetUserByIdQuery(id);
+      const {data: user, isFetching, refetch} = useGetUserByIdQuery(id);
       
   useEffect(() => {
     if(user){
@@ -60,7 +60,7 @@ const EditProfile = () => {
               dispatch(setCredentials(res));
               toast.success('Profile Updated  Successful');
               }
-              navigate('/health');
+              refetch();
           } catch (error) {
               toast.error(error?.data?.message || 'Something went wrong')
               console.log(error);
@@ -70,6 +70,7 @@ const EditProfile = () => {
       
  return (
     <Container fluid  className='basic-structure'>
+      {isFetching && <h1>Loading...</h1>}
       <div className='background-image'/>
       <Row>
         <Col >
@@ -146,6 +147,11 @@ const EditProfile = () => {
           </Form>
           
         </Col>
+        <Link to='/profile' style={{textDecoration:'none', color:'black'}}>
+          <Button variant="primary" style={{ margin: '10px' }}>
+            Back to Profile
+          </Button>
+          </Link>
       </Row>
       <ToastContainer />
     </Container>
