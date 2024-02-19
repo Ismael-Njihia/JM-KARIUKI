@@ -6,6 +6,7 @@ import { getAllUsers,
      getUserById, 
      deleteUserById, 
      logout,
+     editUser,
     getAppointmentsOfaDoc} from '../controller/userController.js';
 
 router.route('/').get(getAllUsers);
@@ -15,6 +16,7 @@ router.route('/login').post(login);
 router.route('/:id').get(getUserById);
 router.route('/:id').delete(deleteUserById);
 router.route('/:id/appointments').get(getAppointmentsOfaDoc);
+router.route('/:id').put(editUser);
 
 
 

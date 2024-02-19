@@ -102,6 +102,30 @@ const login = asyncHandler(async(req, res)=>{
         password: user.password
     })
 })
+//EDIT USER
+//PUT /api/users/:id
+//Private
+const editUser = asyncHandler(async(req, res)=>{
+    const userId = req.params.id;
+    const {email, password, firstName, lastName, pno} = req.body;
+    const user = await prisma.user.findUnique({where: {userId}});
+    if(!user){
+        res.status(404).json({message: 'User not found'});
+    }
+    const updatedUser = await prisma.user.update({
+        where: {userId},
+        data: {
+            email,
+            password,
+            firstName,
+            lastName,
+            pno
+        }
+    })
+   //respond with data and message
+    res.json({message: 'User updated', updatedUser})
+})
+
 
 //GET USER BY ID
 //GET /api/users/:id
@@ -178,4 +202,5 @@ export { getAllUsers,
     getUserById,
      deleteUserById,
      getAppointmentsOfaDoc,
+     editUser,
       logout }
