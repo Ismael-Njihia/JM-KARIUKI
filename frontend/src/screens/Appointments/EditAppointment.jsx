@@ -1,52 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Col, Row, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useGetUsersQuery } from '../../slices/usersApiSlice'; 
 import { toast, ToastContainer } from 'react-toastify';
-import { useAddAppointmentMutation } from '../../slices/ApppointmentApiSlice';
 import '../../Assets/Homepage.css';
-import DatePicker from 'react-datepicker';
-
-const ScheduleAppointment = () => {
+import {useGetAppointmentBYIDQuery} from '../../slices/ApppointmentApiSlice';
+import {useEditAppointmentMutation} from '../../slices/ApppointmentApiSlice';
+import { useParams } from 'react-router-dom';
+const EditAppointment = () => {
  const { userInfo } = useSelector((state) => state.auth);
  const navigate = useNavigate();
+const { id } = useParams();
+console.log(id);
  const { data: users, isLoading: isUsersLoading } = useGetUsersQuery(); 
-const [addAppointment, { isLoading }] = useAddAppointmentMutation();        
-
+ const { data: appointment, loading: appointmentLoading } = useGetAppointmentBYIDQuery(id);
+console.log(appointment);       
+const [editAppointment, { isLoading: editLoading }] = useEditAppointmentMutation();
  const [appointDatetime, setAppointDateTime] = useState('');
  const [timestamp, setTimestamp] = useState('');
  const [doctorId, setDoctorId] = useState('');
  const [message, setMessage] = useState('');
 
 
-
-  const currentDate = new Date(); 
-
-  const currentTime = currentDate.getHours() * 3600 + currentDate.getMinutes() * 60 + currentDate.getSeconds();
-  const selectedTime = parseInt(timestamp.split(':')[0]) * 3600 + parseInt(timestamp.split(':')[1]) * 60;
-
-
+useEffect(() => {
+  if (appointment) {
+    setAppointDateTime(appointment?.appointDatetime.split('T')[0]);
+    setTimestamp(appointment?.appointDatetime.split('T')[1]);
+    setDoctorId(appointment?.doctorId);
+    setMessage(appointment?.message);
+  }
+}, [appointment]);
  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
       
       const appointDateTimeCombined = `${appointDatetime}T${timestamp}`;
       console.log(appointDateTimeCombined);
-      const  appointmentData = {
-        appointDatetime: appointDateTimeCombined,
+
+        const res = await editAppointment({
+          appointId: id,
+          apoointmentData :{
+            appointDatetime: appointDateTimeCombined,
             doctorId,
             message,
+          },
 
-        }
-
-        console.log(appointmentData);
-        const res = await addAppointment(appointmentData);
+         });
         console.log(res);
         if(res.error){
             toast.error(res.error?.data?.errMessage);
           }else{
-          toast.success('Appointment Scheduled Successfully');
+          toast.success('Appointment Edited Successfully');
             navigate('/myappointments');
           }
     }catch(e){
@@ -63,16 +68,16 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
     label: `${user.firstName} ${user.lastName}`,
  }));
 
- console.log("doctorOptions", doctorOptions);
 
- 
+
+
 
  return (
     <Container fluid className='basic-structure'>
       <div className='background-image'/>
       <Row>
         <Col>
-          <h1 className="text-center Heading-details">Dear {userInfo.firstName},  Schedule An Appointment Below</h1>
+          <h1 className="text-center Heading-details">Dear {userInfo.firstName},  Edit  your Appointment Below</h1>
           <p className="text-center">Please fill out the form below to submit your Appointment.</p>
           {isUsersLoading && <p>Loading...</p>}
           <Form onSubmit={handleSubmit} className='form-details'>
@@ -80,7 +85,8 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
           <Form.Label>Appointment Date</Form.Label>
           <Form.Control
           type='date'
-            selected={appointDatetime} 
+            selected={appointDatetime}
+            value={appointDatetime}
             onChange={(e) => {
               setAppointDateTime(e.target.value); 
             }} 
@@ -131,12 +137,13 @@ const [addAppointment, { isLoading }] = useAddAppointmentMutation();
               outline: 'none',
               width: '100%',
               marginTop: '30px',
-            }} disabled={isUsersLoading}>Submit</Button>
+            }} disabled={isUsersLoading}   >Submit</Button>
           </Form>
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
  );
 };
 
-export default ScheduleAppointment;
+export default EditAppointment;

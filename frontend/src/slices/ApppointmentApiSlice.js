@@ -18,13 +18,14 @@ export const AppointmentApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["Appointments"],
         }),
         editAppointment: builder.mutation({
-            query: (appointment) => ({
-                url: `/api/appointments/${appointment.appointId}`,
-                method: 'PUT',
-                body: appointment,
+            query: ({appointId, apoointmentData}) => ({
+              url: `/api/appointments/edit/${appointId}`,
+              method: 'PUT',
+              body: apoointmentData,
             }),
             invalidatesTags: ["Appointments"],
-        }),
+          }),
+          
         addAppointment: builder.mutation({
             query: (appointment) => ({
                 url: `/api/appointments/create`,
