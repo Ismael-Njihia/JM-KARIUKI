@@ -27,14 +27,14 @@ import ScheduleAppointment from './screens/Appointments/ScheduleAppointment';
 import Chat from './screens/Chat';
 import UserProfile from './screens/Doctor/UserProfile';
 import DocProfile from './screens/DocProfile';
-
+import EditAppointment from './screens/Appointments/EditAppointment';
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<Homepage/>}/>
       <Route path='/register' element={<Register />} />
       <Route path='/login' element={<Login />} />
-    
+      <Route path='/edit_appointment/:id' element={<EditAppointment />}/>
 
       <Route path='/' element={<UserRoute />}>
         <Route path='/health' element={<HealthDataForm />} />

@@ -12,8 +12,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { useCancelAppointmentMutation } from '../slices/ApppointmentApiSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import {useDeleteAppointmentMutation} from '../slices/ApppointmentApiSlice';
-import {useEditAppointmentMutation} from '../slices/ApppointmentApiSlice';
 import '../Assets/Homepage.css';
+import { useNavigate } from "react-router-dom";
 
 const MyAppointments = () => {
     const { userInfo } = useSelector(state => state.auth);
@@ -27,11 +27,8 @@ const MyAppointments = () => {
     const [selectedAppointId, setSelectedAppointId] = useState(null);
     const [cancelAppointment, { isLoading: cancelLoading }] = useCancelAppointmentMutation();
     const [deleteAppointment, { isLoading: deleteLoading }] = useDeleteAppointmentMutation();
-    const [editAppointment, { isLoading: editLoading }] = useEditAppointmentMutation();
     const [showDelete, setShowDelete] = useState(false);
     const [selectedAppointIdDelete, setSelectedAppointIdDelete] = useState(null);
-    const [selectedAppointIdEdit, setSelectedAppointIdEdit] = useState(null);
-    const [showEdit, setShowEdit] = useState(false);
     const handleShow = (appointId) => {
         console.log(appointId)
         setSelectedAppointId(appointId); // Set the selected appointment ID in the state
@@ -43,14 +40,10 @@ const MyAppointments = () => {
         setSelectedAppointIdDelete(appointId); 
         setShowDelete(true);    
         };
-    const handleShowEdit = (appointId) => {
-        console.log(appointId)
-        setSelectedAppointIdEdit(appointId);
-        setShowEdit(true);
-    };
+    
     const handleClose = () => setShow(false);
     const handleCloseDelete = () => setShowDelete(false);
-    const handleCloseEdit = () => setShowEdit(false);
+    
   
     const handleCancel = async () => {
       try {
@@ -90,26 +83,6 @@ const MyAppointments = () => {
           console.log(error);
         } finally {
             handleCloseDelete();
-        }
-    }
-    const handleEdit = async () => {
-        try {
-          console.log(selectedAppointId, 'selectedAppointId');
-          const response = await editAppointment(selectedAppointIdEdit).unwrap();
-          console.log(response);
-          if(response.error) {
-              toast.error(response.error.data.message || 'An error occured');
-              return;
-          }
-          else{
-          toast.success('Appointment edited successfully');
-          console.log(response);
-          }
-        } catch (error) {
-          toast.error(error?.data?.message);
-          console.log(error);
-        } finally {
-            handleCloseEdit();
         }
     }
     const showCancelledError = () => {
@@ -192,7 +165,9 @@ const MyAppointments = () => {
                                                 </td>
                                                 <td>
                                                 <button class="btn btn-transparent">
+                                                  <Link to={`/edit_appointment/${appointment.appointId}`}>
                                                     <FaPencilAlt  class='text-success'/>  
+                                                  </Link>
                                                 </button>
                                                 </td>
                                                 <td>
@@ -239,6 +214,7 @@ const MyAppointments = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
       <ToastContainer />
         </>
     );
