@@ -1,66 +1,76 @@
-import React from 'react';
+
 import { useGetUsersQuery } from '../slices/usersApiSlice';
-import { Table } from 'react-bootstrap';
+import { useFetchAppointmentsQuery } from '../slices/ApppointmentApiSlice';
+import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+
 
 const Dashboard = () => {
-  const { data: users, isLoading } = useGetUsersQuery();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { data: users } = useGetUsersQuery();
+  const { data: appointments } = useFetchAppointmentsQuery();
+  const patients = users?.filter(user => user.userType === 'patient');
+  const doctors = users?.filter(user => user.userType === 'doctor');
+  const { userInfo } = useSelector(state => state.auth);
+const isAdmin = userInfo?.userType === 'admin';
 
-  // Check if the user is an admin
-  const isAdmin = userInfo?.userType === 'admin';
+  
 
   return (
-    <div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        isAdmin ? (
-          <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh'}}>
-            <h2 className='text-center'>All Users</h2>
-            {users ? (
-              <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB', width:'90%', marginLeft:'50px' }}>
-                <thead>
-                  <tr>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>User Type</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.email}>
-                      <td>{user.email}</td>
-                      <td>{user.firstName}</td>
-                      <td>{user.lastName}</td>
-                      <td>{user.userType}</td>
-                      <td>
-                        <FaEdit className='text-primary mr-5' />
-                        </td>
-                        <td>
-                        <FaTrashAlt className='text-danger' />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            ) : (
-              <p>No users available.</p>
-            )}
-            <h2>All Appointments</h2>
-            <Table striped bordered hover variant="dark" style={{ backgroundColor: '#87CEEB' }}>
-              {/* Render appointments table */}
-            </Table>
-          </div>
-        ) : (
-          <p>You do not have permission to view this content.</p>
-        )
+    <Container>
+      {isAdmin? (
+      <><Row>
+        <Col className="text-center">
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Total Users</Card.Title>
+              <Card.Text>{users?.length || 0}</Card.Text>
+              <Link to="/admin/users">
+                <Button variant="primary">View Users</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col className="text-center">
+
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Total Patients</Card.Title>
+              <Card.Text>{patients?.length || 0}</Card.Text>
+              <Link to="/patients">
+                <Button variant="primary">View Patients</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        </Row><Row>
+            <Col className="text-center">
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Total Doctors</Card.Title>
+                <Card.Text>{doctors?.length || 0}</Card.Text>
+                <Link to="/doctors">
+                  <Button variant="primary">View Doctors</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            </Col>
+            <Col className="text-center">
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Total Appointments</Card.Title>
+                <Card.Text>{appointments?.length || 0}</Card.Text>
+                <Link to="/appointments">
+                  <Button variant="primary">View Appointments</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            </Col>
+          </Row></>
+      ):(
+        <h1>Not allowed to access this</h1>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 const Profile = () => {
   const { userInfo } = useSelector(state => state.auth);
-  const userId = userInfo.userId;
+  const userId = userInfo?.userId;
   console.log(userId);
   const [logoutBackendCall] = useLogoutMutation()
   const { data: users, isLoading } = useGetUsersQuery();

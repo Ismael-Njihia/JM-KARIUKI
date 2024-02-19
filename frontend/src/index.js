@@ -29,6 +29,9 @@ import UserProfile from './screens/Doctor/UserProfile';
 import DocProfile from './screens/DocProfile';
 import EditAppointment from './screens/Appointments/EditAppointment';
 import EditProfile from './screens/EditProfile';
+import UsersList from './screens/Admin/UsersList';  
+import UserDetails from './screens/Admin/UserDetails';
+import EditUser from './screens/Admin/EditUser';
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
@@ -49,8 +52,13 @@ const routes = createBrowserRouter(
         <Route path='/chat/:appointId/:id' element={<Chat />} />
         <Route path='/user/:id' element={<UserProfile />} />
         <Route path='/doc/:id' element={<DocProfile />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/admin/dashboard' element={<Dashboard />} />
         <Route path='/editprofile/:id' element={<EditProfile />} />  
+
+        {/* Admin Related routes */}
+        <Route path='/admin/users' element={<UsersList />} />
+        <Route path='/admin/users/:id' element={<UserDetails />} />
+        <Route path='/admin/edit_user/:id' element={<EditUser />} />
         
         </Route>
 
