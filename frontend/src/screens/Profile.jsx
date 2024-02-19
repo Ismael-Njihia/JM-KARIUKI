@@ -10,6 +10,7 @@ import {useLogoutMutation} from "../slices/usersApiSlice"
 import {toast} from "react-toastify"
 import {Row, Col, Table} from 'react-bootstrap'
 import '../Assets/Homepage.css'
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { userInfo } = useSelector(state => state.auth);
@@ -127,7 +128,9 @@ const Profile = () => {
           
           <p>Phone Number: {currentUser.pno}</p>
           <p>User Type: {currentUser.userType}</p>
-          <Button variant='primary' style={{ margin: '10px' }}>Edit Profile</Button>
+          <Button variant='primary' style={{ margin: '10px' }}>
+            <Link style={{textDecoration:'none', color:'white'}} to={`/editprofile/${currentUser.userId}`}>Edit Profile</Link>
+            </Button>
           <Button onClick={handleLogout} variant='danger' style={{ margin: '10px' }}>Logout</Button>
         </div>
       )}

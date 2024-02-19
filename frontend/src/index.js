@@ -28,6 +28,7 @@ import Chat from './screens/Chat';
 import UserProfile from './screens/Doctor/UserProfile';
 import DocProfile from './screens/DocProfile';
 import EditAppointment from './screens/Appointments/EditAppointment';
+import EditProfile from './screens/EditProfile';
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
@@ -49,6 +50,7 @@ const routes = createBrowserRouter(
         <Route path='/user/:id' element={<UserProfile />} />
         <Route path='/doc/:id' element={<DocProfile />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/editprofile/:id' element={<EditProfile />} />  
         
         </Route>
 
