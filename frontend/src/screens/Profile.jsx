@@ -11,6 +11,7 @@ import {toast} from "react-toastify"
 import {Row, Col, Table} from 'react-bootstrap'
 import '../Assets/Homepage.css'
 import { Link } from 'react-router-dom';
+import { useEffect } from "react";
 
 const Profile = () => {
   const { userInfo } = useSelector(state => state.auth);
@@ -22,6 +23,10 @@ const Profile = () => {
     const navigate = useNavigate();
   // Find the user details for the current user
   const currentUser = users?.find(user => user.userId === userId);
+
+
+useEffect(() => {}, [currentUser]);
+
   console.log(currentUser);
 
   const renderHealthDataTable = () => {
