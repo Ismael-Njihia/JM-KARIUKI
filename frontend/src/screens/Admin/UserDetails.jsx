@@ -3,7 +3,7 @@ import {useGetUserByIdQuery} from '../../slices/usersApiSlice';
 import { Card, Row, Col, ListGroup, Table } from 'react-bootstrap';
 import '../../Assets/Homepage.css';
 import {useDeleteUserMutation} from '../../slices/usersApiSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,9 @@ const UserDetails = () => {
         setSelectedDelete(id);
         setShowDelete(true);
     }
+
+    // make the fetch users call in UseEffect
+    useEffect(() => {}, [user]);
 
     const handleCloseDelete = () => {
         setShowDelete(false);

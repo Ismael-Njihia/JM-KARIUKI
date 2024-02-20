@@ -9,8 +9,8 @@ import { useGetUsersQuery } from '../../slices/usersApiSlice';
 
 const Prescriptions = () => {
   const { userInfo } = useSelector(state => state.auth);
-  const userId = userInfo.userId;
-  const firstName = userInfo.firstName;
+  const userId = userInfo?.userId;
+  const firstName = userInfo?.firstName;
   const navigate = useNavigate();
   const { appointId } = useParams();
   console.log(appointId);

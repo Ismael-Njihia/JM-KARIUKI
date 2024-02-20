@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import {useDispatch, useSelector} from 'react-redux'
-import { setCredentials } from '../../slices/AuthSlice'
+import { useSelector} from 'react-redux'
 import {toast, ToastContainer} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
 import { useEffect, useState } from 'react'
@@ -14,7 +13,6 @@ import {useGetUserByIdQuery} from '../../slices/usersApiSlice'
 
 const EditUser = () => {
       const navigate = useNavigate();
-      const dispatch = useDispatch();
       const [updateUser, {isUpdating}] = useUpdateUserMutation();
       const {userInfo } = useSelector(state => state.auth);
       const {id} = useParams();
@@ -62,8 +60,7 @@ const EditUser = () => {
                 toast.error(res.error?.data?.message || 'Something went wrong')
               }
               else{
-              dispatch(setCredentials(res));
-              toast.success('Profile Updated  Successful please login again');
+              toast.success('User Updated  Successful');
               }
           } catch (error) {
               toast.error(error?.data?.message || 'Something went wrong')

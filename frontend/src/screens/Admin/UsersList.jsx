@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const UsersList = () => {
   const { data: users, isLoading } = useGetUsersQuery();
   const { userInfo } = useSelector((state) => state.auth);
+
+// Update users on the page when the users state changes
+useEffect(() => {}, [users]);
 
   // Check if the user is an admin
   const isAdmin = userInfo?.userType === 'admin';
