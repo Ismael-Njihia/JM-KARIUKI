@@ -9,10 +9,11 @@ export const medicalApiSlice = apiSlice.injectEndpoints({
                 body: prescription,
             }),
         }),
-        fetchMedical: builder.query({
-            query: () => `/api/prescription`,
-            providesTags: ["Prescriptions"],
-        }),
+       fetchMedical: builder.query({
+           query: () => `/api/medical`,
+           method: 'GET',
+           providesTags: ["Medical"],
+       }),
     })
 })
 export const{
