@@ -1,34 +1,19 @@
-// export const getToken = async () => {
-//     const res = await fetch(`${API_BASE_URL}/get-token`, {
-//       method: "GET",
-//     });
-  
-//     const { token } = await res.json();
-//     return token;
-//   };
-  
-//   // API call to create meeting
-//   export const createMeeting = async ({ token }) => {
-//     const res = await fetch(`${API_BASE_URL}/create-meeting`, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ token }),
-//     });
-  
-//     const { meetingId } = await res.json();
-//     return meetingId;
-//   };
+export const authToken =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI4YzdkMjM4Mi00NDM0LTRhMGMtYjhmNS1iMmNkOTkyMWRiZDAiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcwODUxNTQ4OCwiZXhwIjoxNzI0MDY3NDg4fQ.rfTMKLS0HanH_CnFajZtMxtvf4u4UFCOmDBqetZTLxU"
 
-import {apiSlice} from "./apiSlice";
 
-export const usersApiSlice = apiSlice.injectEndpoints({
-    endpoints: (builder) =>({
-        login: builder.mutation({
-            query: (credentials) => ({
-                url: `${USERS_URL}/login`,
-                method: 'POST',
-                body: credentials
-            })
-        })
-    })
-})
+
+// API call to create meeting
+export const createMeeting = async () => {
+  const res = await fetch(`https://api.videosdk.live/v1/meetings`, {
+    method: "POST",
+    headers: {
+      authorization: `${authToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ region: "sg001" }),
+  });
+
+  const { meetingId } = await res.json();
+  return meetingId;
+};
+
