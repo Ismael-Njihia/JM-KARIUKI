@@ -6,6 +6,7 @@ import healthRoute from './route/healthRoute.js';
 import cookieParser from 'cookie-parser';
 import medicalRoute from './route/medicalRoute.js'
 import messageRoute from './route/messageRoute.js';
+import videoRoute from './route/videoMeetingController.js';
 
 const app = express();
 app.use(cookieParser());
@@ -18,6 +19,7 @@ app.use('/api/appointments', appointRoute);
 app.use('/api/health', healthRoute);
 app.use('/api/medical', medicalRoute);
 app.use('/api/messages', messageRoute);
+app.use('/api/videoMeeting', videoRoute);
 
 
 app.listen(PORT, () => {

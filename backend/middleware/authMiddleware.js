@@ -9,8 +9,7 @@ const secret = process.env.JWT_SECRET;
 const auth = asyncHandler(async(req, res, next)=>{
     const token = req.cookies.token;
     if(!token){
-        res.status(401);
-        throw new Error('Not authorized, no token');
+       res.status(401).json({error: "Unauthorized"});
     }
     try {
         const decoded = jwt.verify(token, secret);
@@ -18,8 +17,7 @@ const auth = asyncHandler(async(req, res, next)=>{
         const user = await prisma.user.findUnique({where: {userId: decoded.userId}});
 
         if(!user){
-            res.status(404).json({error: "user not Found"})
-            return;
+            res.status(401).json({error: "Unauthorized, Invalid Token!"})
         }
         req.user = user;
         next();
