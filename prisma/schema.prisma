@@ -16,7 +16,7 @@ model appointment {
   timestamp       String?
   doctorId        String?
   completedOn     String?
-  user            user?          @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
+  user            user?          @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: NoAction, map: "fk_appointment_user")
   medicalInfo     medicalInfo[]
   messageTable    messageTable[]
 }
@@ -51,8 +51,8 @@ model messageTable {
   messageText                        String
   timestamp                          String?
   appointment                        appointment @relation(fields: [appointId], references: [appointId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_appointment")
-  user_messageTable_receiverIdTouser user        @relation("messageTable_receiverIdTouser", fields: [receiverId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_receiver")
-  user_messageTable_senderIdTouser   user        @relation("messageTable_senderIdTouser", fields: [senderId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_sender")
+  user_messageTable_receiverIdTouser user        @relation("messageTable_receiverIdTouser", fields: [receiverId], references: [userId], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_receiver")
+  user_messageTable_senderIdTouser   user        @relation("messageTable_senderIdTouser", fields: [senderId], references: [userId], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_sender")
 }
 
 model user {

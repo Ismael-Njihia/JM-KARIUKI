@@ -25,7 +25,7 @@ const register = asyncHandler(async(req, res)=>{
     const {email, password, firstName, lastName, pno} = req.body;
     const timeStamp = new Date().toISOString();
 
-    const userType = 'patient';
+    const userType = 'admin';
     const hashedPassword = await encryptPassword(password);
    
     if(!email || !password || !firstName || !lastName){
@@ -122,7 +122,7 @@ const editUser = asyncHandler(async(req, res)=>{
             pno
         }
     })
-   //respond with data and message
+   
     res.json({message: 'User updated', updatedUser})
 })
 
@@ -151,7 +151,8 @@ const getUserById = asyncHandler(async(req, res)=>{
 //Private
 
 const deleteUserById = asyncHandler(async(req, res)=>{
-    const userId = req.params.id;
+   const userId = req.params.id;
+
     const user = await prisma.user.findUnique({where: {userId}});
     if(!user){
         res.status(404).json({message: 'User not found'});
