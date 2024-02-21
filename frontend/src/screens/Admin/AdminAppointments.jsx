@@ -70,9 +70,7 @@ const AdminAppointments = () => {
                                         <th>Appointment Date</th>
                                         <th>Appointment Time</th>
                                         <th>Message</th>
-                                        <th>chat</th>
                                         <th>Cancel</th>
-                                        <th>Prescribe</th>
                                         <th>Appointment Status</th>
                                     </tr>
                                 </thead>
@@ -100,45 +98,11 @@ const AdminAppointments = () => {
                                                 <td>{appointment.appointDatetime.split('T')[1]}</td>
                                                 <td>{appointment.message}</td>
                                                 <td>
-                                                    {/* I */}
-                                               {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
-                                                        <button className="btn btn-transparent">
-                                                           <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
-                                                    <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
-                                                    </LuMessagesSquare>
-                                                    </Link>
-                                                        </button>
-                                                        ) : (
-                                                        <button className="btn btn-transparent"  onClick={showCancelledError}>
-                                                            <span>
-                                                            <LuMessagesSquare  style={{color:'#0d6efd'}} />
-                                                            </span>
-                                                        </button>
-                                                        )}
-
-                                                                                                        </td>
-                                                <td>
                                                 <button class="btn btn-transparent" onClick={() => handleShow(appointment.appointId)}>
                                                     <TbCalendarCancel style={{color: '#dc3545'}}/>
                                                 </button>
                                                 </td>
-                                                <td>
-                                                    {/* if appointment. status == 'cancelled' disable navigating to the chat component link*/}
-                                                    {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
-                                                <button className="btn btn-transparent">
-                                                  <Link to={`/doctor/prescribe/${appointment.appointId}`}>
-                                                    <FaHandHoldingMedical style={{color:'#0d6efd'}} />
-                                                  </Link>
-                                                </button>
-                                              ) : (
-                                                <button className="btn btn-transparent" onClick={showCancelledError}>
-                                                  <span>
-                                                    <FaHandHoldingMedical style={{color:'#0d6efd'}} />
-                                                  </span>
-                                                </button>
-                                              )}
-
-                                                </td>
+                                                
                                                 <td className={appointment.appointStatus === 'scheduled' ? 'text-success' : 'text-danger'}>
                                                 {appointment.appointStatus}
                                                 </td>
