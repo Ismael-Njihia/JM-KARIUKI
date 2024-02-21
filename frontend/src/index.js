@@ -34,6 +34,7 @@ import UserDetails from './screens/Admin/UserDetails';
 import EditUser from './screens/Admin/EditUser';
 import AdminAppointments from './screens/Admin/AdminAppointments';
 import AdminPrescriptions from './screens/Admin/AdminPrescriptions';
+import MeetingEntry from './screens/videoChat/MeetingEntry';
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
@@ -56,7 +57,7 @@ const routes = createBrowserRouter(
         <Route path='/doc/:id' element={<DocProfile />} />
         <Route path='/admin/dashboard' element={<Dashboard />} />
         <Route path='/editprofile/:id' element={<EditProfile />} />  
-
+        <Route path='/video/:id' element={<MeetingEntry />} />
         {/* Admin Related routes */}
         <Route path='/admin/users' element={<UsersList />} />
         <Route path='/admin/users/:id' element={<UserDetails />} />

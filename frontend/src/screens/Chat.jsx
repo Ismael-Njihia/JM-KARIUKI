@@ -147,7 +147,14 @@ const Chat = () => {
 
                 </ListGroup>
 
-              
+              <hr style={{ borderTop: '2px solid #000' }} />
+              <Button variant='primary' style={{ width: '100%' }}>
+                <Link to={`/video/${appointId}`}>
+                Start Video Call
+                </Link>
+                </Button>
+
+
             </Col>
           </Row>
 
