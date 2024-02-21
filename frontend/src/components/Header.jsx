@@ -43,7 +43,7 @@ const Header = () => {
                 }>
                   <NavDropdown.Item>{
                     userInfo.userType === 'patient' ? "My Appointments" :
-                    userInfo.userType === 'admin' ? "Admin Appointments" :
+                    userInfo.userType === 'admin' ? "Appointments" :
                     "Appointments"
                   }</NavDropdown.Item>
                 </LinkContainer>
@@ -99,7 +99,7 @@ const Header = () => {
                   <NavDropdown.Item>doctors</NavDropdown.Item>
                 </LinkContainer>
 
-                <LinkContainer to='/users'>
+                <LinkContainer to='/admin/users'>
                   <NavDropdown.Item>Users</NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
