@@ -2,6 +2,8 @@ import prisma from "../../db/prisma.js";
 import asyncHandler from "../middleware/asyncHandler.js";
 import randomGenerator from "../util/randomGenerator.js";
 import sendAppointmentEmail from "../util/SendAppointmentEmail.js";
+import sendMeetingId from "../util/sendMeetingId.js";
+
 //GET ALL APPOINTMENTS
 //GET /api/appointments
 //Private
@@ -226,11 +228,53 @@ const getAppointmentById = asyncHandler(async(req, res)=>{
     }
 })
 
+//SEND MEETING ID
+//POST /api/appointments/sendMeetingId
+
+const sendMeetingIdToUser = asyncHandler(async(req, res)=>{
+    //logged in user
+    const loggedIn = req.user.userId;
+    const {meetingId, appointId} = req.body;
+    console.log(meetingId + "Meeting ID")
+    console.log(appointId + "appointId")
+    if(!meetingId || !appointId){
+        res.status(400).json({message: "Please fill all fields"});
+    }
+    //check appointment if it exists
+    const appointment = await prisma.appointment.findUnique({where: {appointId}});
+    if(!appointment){
+        res.status(404).message({message: "Appointment not found"});    
+    }
+    //get the docId 
+    const docId = appointment.doctorId;
+    //get the userId
+    const userId = appointment.userId;
+
+    //pick between docId and UserId which is not similat to loggedIn
+    const recipientId = docId === loggedIn ? userId : docId;
+    //get the user details
+    const user = await prisma.user.findUnique({where: {userId: recipientId}});
+
+    const name = user.firstName + " " + user.lastName;
+    const email = user.email;
+
+    //send the meetingId
+    sendMeetingId(email, name, meetingId, appointId);
+    console.log(email + "is where the email is going")
+
+    if(user){
+        res.json({message: "Meeting ID sent successfully"});
+    }
+    else{
+        res.status(404).json({message: "User not found"});
+    }
+})
 
 //export all functions
 export {getAllAppointments,
      createAppointment,
      editAppointment,
+     sendMeetingIdToUser,
      deleteAppointment,
      getAppointmentById,
       cancelAppointment, updateAppointment};

@@ -7,9 +7,11 @@ import cookieParser from 'cookie-parser';
 import medicalRoute from './route/medicalRoute.js'
 import messageRoute from './route/messageRoute.js';
 import videoRoute from './route/videoMeetingController.js';
+import morgan from 'morgan';
 
 const app = express();
 app.use(cookieParser());
+app.use(morgan('dev'));
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 

@@ -7,6 +7,7 @@ import {getAllAppointments,
     editAppointment,
     deleteAppointment,
     getAppointmentById,
+    sendMeetingIdToUser,
      createAppointment} from '../controller/appointController.js';
 
 router.route('/').get( auth, getAllAppointments);
@@ -16,5 +17,6 @@ router.route('/update/:id').put(auth, updateAppointment);
 router.route('/edit/:id').put(auth, editAppointment);
 router.route('/:id').delete(auth, deleteAppointment);
 router.route('/:id').get(auth, getAppointmentById);
+router.route('/sendMeetingId').post(auth, sendMeetingIdToUser);
 
 export default router;

@@ -1,12 +1,15 @@
 import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { FaVideo, FaPlusCircle } from 'react-icons/fa';
 import { useState } from 'react';
+
 function JoinScreen({ getMeetingAndToken }) {
     const [meetingId, setMeetingId] = useState(null);
-    const onClick = async () => {
-      await getMeetingAndToken(meetingId);
+
+   
+   const onClick = async () => {
+    await getMeetingAndToken(meetingId);
+     
     };
-  
     return (
       <div className="text-center" >
         <h1 className="text-center">Welcome to the Video Meeting</h1>

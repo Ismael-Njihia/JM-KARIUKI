@@ -3,14 +3,8 @@ import {
   MeetingProvider
 } from "@videosdk.live/react-sdk";
 import { createMeeting, authToken } from "../../slices/videoApiSlice";
-
-
-
 import MeetingView from "./MeetingView";
 import JoinScreen from "./JoinScreen";
-
-
-
 
 
 function MeetingEntry() {
@@ -41,8 +35,12 @@ function MeetingEntry() {
       <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />
     </MeetingProvider>
   ) : (
+    <>
     <JoinScreen getMeetingAndToken={getMeetingAndToken} />
+   
+    </>
   );
+  
 }
 
 export default MeetingEntry;
