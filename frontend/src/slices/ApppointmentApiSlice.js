@@ -46,6 +46,13 @@ export const AppointmentApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Appointments"],
         }),
+        sendMeetingIdToUser: builder.mutation({
+            query: (meetingId, appointId) => ({
+                url: `/api/appointments/sendMeetingId`,
+                method: 'POST',
+                body: meetingId, appointId,
+            }),
+        }),
     }),
 });
 export const{
@@ -56,5 +63,6 @@ export const{
     useAddAppointmentMutation,
     useGetAppointmentBYIDQuery,
     useCancelAppointmentMutation,
+    useSendMeetingIdToUserMutation,
    
 } = AppointmentApiSlice;

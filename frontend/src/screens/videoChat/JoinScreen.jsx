@@ -1,16 +1,7 @@
 import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import {  FaPlusCircle } from 'react-icons/fa';
 import { useState } from 'react';
-import { MdAdminPanelSettings } from "react-icons/md";
-function JoinScreen({ getMeetingAndToken, setMode }) {
-    const [meetingId, setMeetingId] = useState(null);
 
-    
-    const onClick = async (mode) => {
-        setMode(mode);
-        await getMeetingAndToken(meetingId);
-      };
-  
     return (
    
 

@@ -5,7 +5,6 @@ import {
 import { createMeeting, authToken } from "../../slices/videoApiSlice";
 import MeetingView from "./MeetingView";
 import JoinScreen from "./JoinScreen";
-import { useSelector } from "react-redux";
 function MeetingEntry() {
   const [meetingId, setMeetingId] = useState(null);
   const [mode, setMode] = useState("CONFERENCE");
@@ -24,31 +23,6 @@ function MeetingEntry() {
     setMeetingId(null);
   };
 
-  return (
-    <div style={{ backgroundColor: '#87CEEB', minHeight: '100vh' }}>
-    {authToken && meetingId ? (
-      <MeetingProvider
-        config={{
-          meetingId,
-          micEnabled: true,
-          webcamEnabled: true,
-          name: `${firstName} ${lastName}`,
-          mode: mode,
-        }}
-        token={authToken}
-      >
-        <MeetingConsumer>
-          {() => (
-            <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />
-          )}
-        </MeetingConsumer>
-      </MeetingProvider>
-    ) : (
-      <JoinScreen getMeetingAndToken={getMeetingAndToken} setMode={setMode} />
-  
-    )}
-    </div>
-  );
 
 }
 
