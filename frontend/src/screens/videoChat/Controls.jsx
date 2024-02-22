@@ -1,16 +1,16 @@
 import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import {  FaMicrophone, FaVideoSlash, FaMicrophoneSlash } from 'react-icons/fa';
+import {  FaMicrophone, FaVideoSlash, FaMicrophoneSlash , FaVideo} from 'react-icons/fa';
 import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
 import { useRef } from "react";
+import Hls from "hls.js";
+
 function Controls(props) {
-    const micRef = useRef(null);
-    const { leave, toggleMic, toggleWebcam } = useMeeting();
-  
-    const { webcamOn, micOn } =
-    useParticipant(props.participantId);
-    return (
-      <div className="d-flex justify-content-center">
-        <OverlayTrigger
+  const { leave, toggleMic, toggleWebcam, startHls, stopHls } = useMeeting();
+  const { webcamOn, micOn } =
+ useParticipant(props.participantId)
+  return (
+    <div className="d-flex justify-content-center">
+       <OverlayTrigger
           placement="top"
           overlay={<Tooltip id="tooltip-join">Leave Meeting</Tooltip>}
         >
@@ -35,10 +35,31 @@ function Controls(props) {
           </Tooltip>}
         >
           <Button variant="success" onClick={() => toggleWebcam()} style={{ marginLeft: '30px' }}>
-            <FaVideoSlash />
+            {webcamOn? <FaVideo />: <FaVideoSlash />}
           </Button>
-        </OverlayTrigger>
-      </div>
-    );
-  }
+          </OverlayTrigger>
+      <Button variant='primary'style={{ marginLeft: '30px' }}
+        onClick={() => {
+          //Start the HLS in SPOTLIGHT mode and PIN as
+          //priority so only speakers are visible in the HLS stream
+          startHls({
+            layout: {
+              type: "SPOTLIGHT",
+              priority: "PIN",
+              gridSize: "20",
+            },
+            theme: "LIGHT",
+            mode: "video-and-audio",
+            quality: "high",
+            orientation: "landscape",
+          });
+        }}
+      >
+        Start HLS
+      </Button>
+      <></>
+      <Button variant='danger' style={{ marginLeft: '30px' }} onClick={() => stopHls()}>Stop HLS</Button>
+    </div>
+  );
+}
 export default Controls;  
