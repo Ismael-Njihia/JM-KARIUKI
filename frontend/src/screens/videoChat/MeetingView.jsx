@@ -108,7 +108,7 @@ function MeetingView(props) {
        <br></br>
        <br>
        </br>
-       <Button variant='primary' onClick={sendMeetingId}>send Meeting id</Button>
+       <Button variant='primary' onClick={sendmeetingId}>send Meeting id</Button>
        </>
 
      )}

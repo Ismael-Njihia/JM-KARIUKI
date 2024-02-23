@@ -17,7 +17,9 @@ const sendMeetingId = (email, name,meetingId, appointId) => {
             to: email,
             subject: 'Your Meeting ID',
             html: `<h1>Hello ${name},</h1>
-            <h3>Your Meeting ID for the appointment with ID ${appointId} is ${meetingId}</h3>
+            <h3>Your Meeting ID for the appointment with ID ${appointId}</h3>
+            <h2>Meeting ID: ${meetingId}</h2>
+            <p>Kindly use the Meeting ID to join the meeting at the scheduled time.</p>
             <p>Regards,</p>
             <p> JM Kariuki Memorial Hospital</p>`
         };

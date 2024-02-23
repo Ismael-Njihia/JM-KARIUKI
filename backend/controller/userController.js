@@ -25,7 +25,7 @@ const register = asyncHandler(async(req, res)=>{
     const {email, password, firstName, lastName, pno} = req.body;
     const timeStamp = new Date().toISOString();
 
-    const userType = 'admin';
+    const userType = 'patient';
     const hashedPassword = await encryptPassword(password);
    
     if(!email || !password || !firstName || !lastName){
