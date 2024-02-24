@@ -107,7 +107,7 @@ const login = asyncHandler(async(req, res)=>{
 //Private
 const editUser = asyncHandler(async(req, res)=>{
     const userId = req.params.id;
-    const {email, password, firstName, lastName, pno} = req.body;
+    const {email, password, firstName, lastName, pno, userType} = req.body;
     const user = await prisma.user.findUnique({where: {userId}});
     if(!user){
         res.status(404).json({message: 'User not found'});
@@ -119,7 +119,8 @@ const editUser = asyncHandler(async(req, res)=>{
             password,
             firstName,
             lastName,
-            pno
+            pno,
+            userType
         }
     })
    
