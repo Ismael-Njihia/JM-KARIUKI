@@ -4,15 +4,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../slices/AuthSlice'; // Import your logout action
 import { useNavigate } from 'react-router-dom';
 import { FaUserMd, FaUserPlus, FaUser } from 'react-icons/fa'; // Import user type icons
+import {useLogoutMutation} from '../slices/usersApiSlice';
 
 const Header = () => {
  const dispatch = useDispatch();
  const navigate = useNavigate();
+ const [logoutMutation] = useLogoutMutation(); // Logout mutation
  const { userInfo } = useSelector((state) => state.auth); // Access user data
 
- const handleLogout = () => {
- dispatch(logout());
- navigate('/login');
+ const handleLogout = async () => {
+  try {
+    await logoutMutation();
+    dispatch(logout());
+    navigate('/login');
+    
+  } catch (error) {
+    console.log("error", error)
+  }
+
  };
 
  const userTypeIcons = {
