@@ -55,9 +55,9 @@ const Appointments = () => {
     }
     const { data: users, loading } = useGetUsersQuery();
     const doctorAppointments = appointments?.filter(appointment => appointment.doctorId === userId);
-    const showCancelledError = () => {
-        toast.error('You cannot prescribe/ Chat  for a cancelled or completed appointment');
-    }
+    //const showCancelledError = () => {
+      //  toast.error('You cannot prescribe/ Chat  for a cancelled or completed appointment');
+    //}
 
     return (
         <>
@@ -107,7 +107,7 @@ const Appointments = () => {
                                                 <td>{appointment.message}</td>
                                                 <td>
                                                     {/* I */}
-                                               {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
+                                               {appointment.appointStatus === 'cancelled' || appointment.appointStatus === 'completed' || appointment.appointStatus === 'scheduled'? (
                                                         <button className="btn btn-transparent">
                                                            <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
                                                     <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
@@ -115,7 +115,7 @@ const Appointments = () => {
                                                     </Link>
                                                         </button>
                                                         ) : (
-                                                        <button className="btn btn-transparent"  onClick={showCancelledError}>
+                                                        <button className="btn btn-transparent" >
                                                             <span>
                                                             <LuMessagesSquare  style={{color:'#0d6efd'}} />
                                                             </span>
@@ -137,7 +137,7 @@ const Appointments = () => {
                                                   </Link>
                                                 </button>
                                               ) : (
-                                                <button className="btn btn-transparent" onClick={showCancelledError}>
+                                                <button className="btn btn-transparent" >
                                                   <span>
                                                     <FaHandHoldingMedical style={{color:'#0d6efd'}} />
                                                   </span>

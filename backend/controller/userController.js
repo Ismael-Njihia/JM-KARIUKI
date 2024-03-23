@@ -160,7 +160,7 @@ const deleteUserById = asyncHandler(async (req, res) => {
     }
 
     try {
-        // Check if the 'messageTable' model is defined in your Prisma schema
+       
         if (!prisma.messageTable) {
             throw new Error("Related entity 'messageTable' is not defined in Prisma schema");
         }
@@ -178,7 +178,7 @@ const deleteUserById = asyncHandler(async (req, res) => {
         } else {
             console.warn("deleteMany method is not available on 'messageTable' model");
         }
-        // Add more deleteMany calls for other related entities if needed
+        
         await prisma.healthData.deleteMany({ where: { userId } });
 
         // Then delete the user
