@@ -151,17 +151,47 @@ const getUserById = asyncHandler(async(req, res)=>{
 //DELETE /api/users/:id
 //Private
 
-const deleteUserById = asyncHandler(async(req, res)=>{
-   const userId = req.params.id;
+const deleteUserById = asyncHandler(async (req, res) => {
+    const userId = req.params.id;
 
-    const user = await prisma.user.findUnique({where: {userId}});
-    if(!user){
-        res.status(404).json({message: 'User not found'});
+    const user = await prisma.user.findUnique({ where: { userId } });
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
     }
-    const deletedUser = await prisma.user.delete({where: {userId}});
 
-    res.json({message: 'User deleted'})
-})
+    try {
+        // Check if the 'messageTable' model is defined in your Prisma schema
+        if (!prisma.messageTable) {
+            throw new Error("Related entity 'messageTable' is not defined in Prisma schema");
+        }
+
+        // Delete related records first
+        if (prisma.messageTable.deleteMany) {
+            await prisma.messageTable.deleteMany({ 
+                where: { 
+                    OR: [
+                        { senderId: userId },
+                        { receiverId: userId }
+                    ]
+                } 
+            });
+        } else {
+            console.warn("deleteMany method is not available on 'messageTable' model");
+        }
+        // Add more deleteMany calls for other related entities if needed
+        await prisma.healthData.deleteMany({ where: { userId } });
+
+        // Then delete the user
+        await prisma.user.delete({ where: { userId } });
+
+        return res.json({ message: 'User and related records deleted' });
+    } catch (error) {
+        // Handle any errors
+        console.error('Error deleting user and related records:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 
 //LOGOUT USER
 //GET /api/users/logout
