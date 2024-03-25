@@ -9,7 +9,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import '../Assets/chat.css'
 import { IoIosSend } from "react-icons/io";
 import { Link } from 'react-router-dom';
-
+import {useGetUserByIdQuery} from '../slices/usersApiSlice';
+import { Card } from 'react-bootstrap';
+import {useFetchMedicalQuery} from '../slices/medicalApiSlice';
 
 const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -47,19 +49,24 @@ const Chat = () => {
   const {data: messages, loading: messagesLoading} = useGetMessagesByAppointIdQuery(appointId);
   
   const { data: appointment, loading: appointmentLoading } = useGetAppointmentBYIDQuery(appointId);
+  const { data: medical, loading: medicalLoading } = useFetchMedicalQuery();
 
-  console.log(appointment);
+  // Filter the medical for the appoint Id to get the medical info
+  const medicalInfo = medical?.find(med => med.appointId === appointId);
+ 
+
 
   const { data: users, loading } = useGetUsersQuery();
   const doctorDetails = users?.find(user => user.userId === id);
   const patientDetails = users?.find(user => user.userId === id);
   const { userInfo } = useSelector(state => state.auth);
-  const userId = userInfo.userId;
-  const userTypeLogged = userInfo.userType;
+  const userId = userInfo?.userId;
+  const userTypeLogged = userInfo?.userType;
   const [sendMessage, { isLoading }] = useSendMessageMutation();
  
 
-  
+    const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(userId);
+    console.log(user, 'user')
   const [message, setMessage] = useState('');
 
 
@@ -145,6 +152,57 @@ const Chat = () => {
                   </ListGroup.Item>
                 
                 )}
+
+
+ {
+                    userTypeLogged === 'patient' ? (
+                      <>
+<Card style={{ marginTop: '10px', marginLeft: '5px' }}>
+            <Card.Body>
+                <Card.Title>Prescription</Card.Title>
+                <Card.Text>
+               
+
+<p>
+ {medicalInfo?.prescriptions && medicalInfo.prescriptions.length > 0 ? (
+    <>
+      <p>Your Prescriptions:</p>
+      <ol>
+        {medicalInfo.prescriptions.map((prescription, index) => (
+          <li key={index}>{prescription}</li>
+        ))}
+      </ol>
+    </>
+ ) : (
+    <p>No prescriptions</p>
+ )}
+</p>
+<p>Test Results: {medicalInfo?.test_results} </p>
+
+<p>{formatTimestamp(medicalInfo?.timestamp)}</p>
+
+                </Card.Text>
+            </Card.Body>
+            </Card>
+ 
+            <Card style={{ marginTop: '10px', marginLeft: '5px' }}>
+            <Card.Body>
+                <Card.Title>Health Data</Card.Title>
+                <Card.Text>
+                <p>Disabled: {user?.healthData[0]?.disabled ? 'Yes' : 'No'}</p>
+                <p>Disability Type: {user?.healthData[0]?.disabilityType}</p>
+                <p>Allergies: {user?.healthData[0]?.allergies && user.healthData[0].allergies.length > 0 ? user.healthData[0].allergies.join(', ') : 'None'}</p>
+                <p>Chronic Diseases: {user?.healthData[0]?.chronicDiseases && user.healthData[0].chronicDiseases.length > 0 ? user.healthData[0].chronicDiseases.join(', ') : 'None'}</p>
+                <p>Diet Type: {user?.healthData[0]?.dietType}</p>
+                </Card.Text>
+            </Card.Body>
+            </Card>
+            </>
+
+                    ):(
+                      <div></div>
+                    )
+                  }
 
                 </ListGroup>
 
