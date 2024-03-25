@@ -46,7 +46,18 @@ const Header = () => {
                     userInfo.userType === 'admin' ? "Appointments" :
                     "Appointments"
                   }</NavDropdown.Item>
+                  
                 </LinkContainer>
+                {/* link gto patient medical record */}
+                <LinkContainer to={
+                  userInfo.userType === 'patient' ? "/medicalrecord" :
+                  "/medicalrecord"
+                }>
+                  <NavDropdown.Item>{
+                    userInfo.userType === 'patient' ? "Medical Record" :
+                    "Medical Record"
+                  }</NavDropdown.Item>
+                  </LinkContainer>
             <LinkContainer to="/profile">
               <NavDropdown.Item>My Profile</NavDropdown.Item>
             </LinkContainer>

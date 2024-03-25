@@ -74,11 +74,12 @@ const Chat = () => {
 
     try {
       const res = await sendMessage(messageData);
-      if (res.error) {
-        toast.error(res.error?.data?.errMessage);
-      } else {
+      console.log(res)
+      if (res) {
         toast.success('Message sent successfully');
         setMessage('');
+      } else {
+        toast.error(res.error?.data?.errMessage);
       }
     } catch (error) {
       toast.error('Error sending message: ' + error.message);

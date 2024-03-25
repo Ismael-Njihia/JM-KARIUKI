@@ -35,6 +35,7 @@ import EditUser from './screens/Admin/EditUser';
 import AdminAppointments from './screens/Admin/AdminAppointments';
 import AdminPrescriptions from './screens/Admin/AdminPrescriptions';
 import MeetingEntry from './screens/videoChat/MeetingEntry';
+import MedicalRecords from './screens/Doctor/MedicalRecords';
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
@@ -64,7 +65,7 @@ const routes = createBrowserRouter(
         <Route path='/admin/edit_user/:id' element={<EditUser />} />
         <Route path='/admin/appointments' element={<AdminAppointments />} />
         <Route path='/admin/prescriptions' element={<AdminPrescriptions />} />
-        
+        <Route path='/medicalrecord' element={<MedicalRecords />} />
         </Route>
 
     </Route>
