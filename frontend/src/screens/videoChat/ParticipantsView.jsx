@@ -19,31 +19,32 @@ function ParticipantView(props) {
 
 console.log(participants, "participants");
 
-  const videoStream = useMemo(() => {
-    if (webcamOn && webcamStream) {
+const videoStream = useMemo(() => {
+  if (webcamOn && webcamStream) {
+    const mediaStream = new MediaStream();
+    mediaStream.addTrack(webcamStream.track);
+    return mediaStream;
+  }
+}, [webcamStream, webcamOn]);
+
+useEffect(() => {
+  if (micRef.current) {
+    if (micOn && micStream) {
       const mediaStream = new MediaStream();
-      mediaStream.addTrack(webcamStream.track);
-      return mediaStream;
-    }
-  }, [webcamStream, webcamOn]);
+      mediaStream.addTrack(micStream.track);
 
-  useEffect(() => {
-    if (micRef.current) {
-      if (micOn && micStream) {
-        const mediaStream = new MediaStream();
-        mediaStream.addTrack(micStream.track);
-
-        micRef.current.srcObject = mediaStream;
-        micRef.current
-          .play()
-          .catch((error) =>
-            console.error("videoElem.current.play() failed", error)
-          );
-      } else {
-        micRef.current.srcObject = null;
-      }
+      micRef.current.srcObject = mediaStream;
+      micRef.current
+        .play()
+        .catch((error) =>
+          console.error("videoElem.current.play() failed", error)
+        );
+    } else {
+      micRef.current.srcObject = null;
     }
-  }, [micStream, micOn]);
+  }
+}, [micStream, micOn]);
+
 
   
   return (

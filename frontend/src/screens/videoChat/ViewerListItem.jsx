@@ -15,7 +15,7 @@ function ViewerListItem({ participantId }) {
             onClickRequestJoinLiveStream();
           }}
         >
-          Request to join Livestream
+          Admit to join Livestream
         </button>
       </div>
     );

@@ -8,7 +8,6 @@ import JoinScreen from "./JoinScreen";
 import { useSelector } from "react-redux";
 function MeetingEntry() {
  const [meetingId, setMeetingId] = useState(null);
- const [mode, setMode] = useState("CONFERENCE");
  const {userInfo} = useSelector((state) => state.auth);
  const firstName = userInfo?.firstName;
  const lastName = userInfo?.lastName;
@@ -33,9 +32,8 @@ function MeetingEntry() {
        config={{
          meetingId,
          micEnabled: true,
-         webcamEnabled: true,
-         name: `${firstName} ${lastName}`,
-         mode: mode,
+        webcamEnabled: true,
+         name: `${firstName} ${lastName}`
        }}
        token={authToken}
      >
@@ -46,7 +44,7 @@ function MeetingEntry() {
        </MeetingConsumer>
      </MeetingProvider>
    ) : (
-     <JoinScreen getMeetingAndToken={getMeetingAndToken} setMode={setMode} />
+     <JoinScreen getMeetingAndToken={getMeetingAndToken} />
     )}
    </div>
  );

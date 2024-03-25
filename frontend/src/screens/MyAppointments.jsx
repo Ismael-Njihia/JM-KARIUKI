@@ -20,7 +20,7 @@ const MyAppointments = () => {
     const userId = userInfo.userId;
     const firstName = userInfo.firstName;
     const { data: appointments, isLoading } = useFetchAppointmentsQuery();
-    console.log(appointments);
+    //console.log(appointments);
     const { data: users, loading } = useGetUsersQuery();
     const patientAppointments = appointments?.filter(appointment => appointment.userId === userId);
     const [show, setShow] = useState(false);
@@ -47,7 +47,7 @@ const MyAppointments = () => {
   
     const handleCancel = async () => {
       try {
-        console.log(selectedAppointId, 'selectedAppointId');
+        //console.log(selectedAppointId, 'selectedAppointId');
         const response = await cancelAppointment(selectedAppointId).unwrap();
         console.log(response);
         if(response.error) {
@@ -66,25 +66,27 @@ const MyAppointments = () => {
       }
     }
     const handleDelete = async () => {
-        try {
-          console.log(selectedAppointId, 'selectedAppointId');
-          const response = await deleteAppointment(selectedAppointIdDelete).unwrap();
-          console.log(response);
-          if(response.error) {
-              toast.error(response.error.data.message || 'An error occured');
-              return;
-          }
-          else{
-          toast.success('Appointment deleted successfully');
-          console.log(response);
-          }
-        } catch (error) {
-          toast.error(error?.data?.message);
-          console.log(error);
-        } finally {
-            handleCloseDelete();
-        }
-    }
+      try {
+         console.log(selectedAppointIdDelete, 'selectedAppointId');
+         const response = await deleteAppointment(selectedAppointIdDelete);
+        // console.log(response);
+         if(response.error) {
+             toast.error(response.error.data.message || 'An error occured');
+             return;
+         } else {
+             toast.success('Appointment deleted successfully');
+             console.log(response);
+             // Update the state to reflect the deletion
+             appointments(prevAppointments => prevAppointments.filter(appointment => appointment.id !== selectedAppointIdDelete));
+         }
+      } catch (error) {
+         toast.error(error?.data?.message);
+         console.log(error);
+      } finally {
+         handleCloseDelete();
+      }
+     }
+     
     const showCancelledError = () => {
       toast.error('You cannot Chat  for a cancelled or completed appointment');
   }
@@ -111,7 +113,7 @@ const MyAppointments = () => {
                                         <th>Appointment Status</th>
                                         <th>chat</th>
                                         <th>Cancel</th>
-                                        <th>Eddit</th>
+                                        <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
                                 </thead>
@@ -122,7 +124,7 @@ const MyAppointments = () => {
                                         return (
                                             <tr key={appointment.appointId}>
 
-                                                <td> <Link to= {`/doctor/view_appointment/${appointment.appointId}`}>{appointment.appointId}</Link> </td>
+                                                <td> {appointment.appointId}</td>
                                                 {doctorDetails ? (
                                                     <>
                                                         <td>{doctorDetails.email}</td>
@@ -143,20 +145,20 @@ const MyAppointments = () => {
                                                 {appointment.appointStatus}
                                                 </td>
                                                 <td>
-                                                {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? (
+                                                {/* {appointment.appointStatus !== 'cancelled' && appointment.appointStatus !== 'completed' ? ( */}
                                                         <button className="btn btn-transparent">
                                                            <Link to={`/chat/${appointment.appointId}/${appointment.userId}`}>
                                                     <LuMessagesSquare class='btn-primary'  style={{color:'#0d6efd'}}>
                                                     </LuMessagesSquare>
                                                     </Link>
                                                         </button>
-                                                        ) : (
-                                                        <button className="btn btn-transparent"  onClick={showCancelledError}>
+                                                        {/* ) : ( */}
+                                                        {/* <button className="btn btn-transparent"  onClick={showCancelledError}>
                                                             <span>
                                                             <LuMessagesSquare  style={{color:'#0d6efd'}} />
                                                             </span>
-                                                        </button>
-                                                        )}
+                                                        </button> */}
+                                                         {/* )} */}
                                                 </td>
                                                 <td>
                                                 <button class="btn btn-transparent" onClick={() => handleShow(appointment.appointId)}>
