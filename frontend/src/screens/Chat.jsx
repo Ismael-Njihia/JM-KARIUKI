@@ -177,9 +177,6 @@ const Chat = () => {
     <p>No prescriptions</p>
  )}
 </p>
-<p>Test Results: {medicalInfo?.test_results} </p>
-
-<p>{formatTimestamp(medicalInfo?.timestamp)}</p>
 
                 </Card.Text>
             </Card.Body>
