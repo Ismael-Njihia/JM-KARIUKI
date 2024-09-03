@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:1901@localhost:5432/jm"
 }
 
 model appointment {
@@ -14,9 +14,9 @@ model appointment {
   appointDatetime String?
   message         String?
   timestamp       String?
-  completedOn     String?
   doctorId        String?
-  user            user?          @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_user")
+  completedOn     String?
+  user            user?          @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: NoAction, map: "fk_appointment_user")
   medicalInfo     medicalInfo[]
   messageTable    messageTable[]
 }
@@ -24,22 +24,22 @@ model appointment {
 model healthData {
   healthId           String   @id
   userId             String?
-  allergies          String[]
-  chronicDiseases    String[]
-  dietType           String?
-  disabilityType     String?
-  disabled           Boolean?
-  mentalHealthStatus String[]
   updatedOn          String?
+  disabled           Boolean?
+  disabilityType     String?
+  chronicDiseases    String[]
+  allergies          String[]
+  dietType           String?
+  mentalHealthStatus String[]
   user               user?    @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_healthdata_user")
 }
 
 model medicalInfo {
   medicalId     String       @id
+  appointId     String?
   test_results  String?
   prescriptions String[]
   timestamp     String?
-  appointId     String?
   appointment   appointment? @relation(fields: [appointId], references: [appointId], onDelete: NoAction, onUpdate: NoAction, map: "fk_medicalinfo_user")
 }
 
@@ -51,8 +51,8 @@ model messageTable {
   messageText                        String
   timestamp                          String?
   appointment                        appointment @relation(fields: [appointId], references: [appointId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_appointment")
-  user_messageTable_receiverIdTouser user        @relation("messageTable_receiverIdTouser", fields: [receiverId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_receiver")
-  user_messageTable_senderIdTouser   user        @relation("messageTable_senderIdTouser", fields: [senderId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_sender")
+  user_messageTable_receiverIdTouser user        @relation("messageTable_receiverIdTouser", fields: [receiverId], references: [userId], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_receiver")
+  user_messageTable_senderIdTouser   user        @relation("messageTable_senderIdTouser", fields: [senderId], references: [userId], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_sender")
 }
 
 model user {

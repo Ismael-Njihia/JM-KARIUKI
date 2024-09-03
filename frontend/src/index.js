@@ -51,7 +51,7 @@ const routes = createBrowserRouter(
          <Route path='/appointments' element={<Appointments />} />
         <Route path='/patients' element={<Patients />} />
         <Route path='/doctor/prescribe/:appointId' element={<Prescriptions />} />
-       <Route path='/doctors' element={<Doctors />} />
+       <Route path='/doctor' element={<Doctors />} />
        <Route path='/schedule_appointment' element={<ScheduleAppointment />} />
         <Route path='/chat/:appointId/:id' element={<Chat />} />
         <Route path='/user/:id' element={<UserProfile />} />
